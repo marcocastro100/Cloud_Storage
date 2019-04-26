@@ -83,9 +83,6 @@
 					<a href="compartilhado.php" target="contentiframe" class="d-inline p-1 btn-block btn submenu" >
 						Compartilhados Comigo
 					</a>
-                    <a href="perfil.php" target="contentiframe" class="d-inline p-1 btn-block btn submenu" >
-						Conta Pessoal
-					</a>
 				</div>
 			</div>
 			</td>

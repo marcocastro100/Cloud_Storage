@@ -24,7 +24,6 @@
         $id_arq_comp = $_POST['arq_comp'];
         $id_remetente = $_SESSION['id_usuario'];
         $id_destinatario = $_POST['compartilhar'];
-        echo $id_arq_comp.','.$id_remetente.','.$id_destinatario;
         $insert_compartilhamento = "insert into compartilhamento (id_arquivo,id_remetente,id_destinatario) values(
             ".$id_arq_comp.",".$id_remetente.",".$id_destinatario.");";
         if($insert_compartilhamento = mysqli_query($conexao,$insert_compartilhamento)){
@@ -73,7 +72,7 @@
                                 $nome_arquivo
                             </div>
                             <div class='col-sm'>
-                                $tamanho_arquivo
+                                $tamanho_arquivo Kb
                             </div>
                             <div class='col-sm'>
                                 <form action='compartilhar.php' method='post' target='_self'>
