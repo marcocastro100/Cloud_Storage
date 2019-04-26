@@ -23,7 +23,7 @@
 	</style>
 </head>
 <!--*************************************************Menu*******************************************************-->
-<body>
+<body style="background-color:e6e6e6">
 	<div class="jumbotron">
 		<table width="100%">
 			<tr>
@@ -33,17 +33,17 @@
 				<td width="50%">
 					<div style="margin-top:50px">
 						 <a href="index.php" class="btn btn-light">Home</a>
+						 <!--------------------------------------PHP-------------------------------->
 						 <!--Decisão de o botão de acesso ao usuario deve ser desabilitado ou não com base no login-->
-								 <?php if(isset($_SESSION['user_nome'])){ ?>
+								 <?php if(isset($_SESSION['nome_usuario'])){ ?>
 									 <a href="usuario.php" class="btn btn-light btn-primary-s">Area do Cliente</a>
 								 <?php }
 								 	else{ ?>
 										<button href="usuario.php" class="btn btn-light btn-primary-s" disabled>Area do Cliente</button>
 									<?php } ?>
 
-								 
-						 <button href="" class="btn btn-light btn-primary-s">Informações</button>
-						 <a href="Exeple.html" class="btn btn-light">Fale Conosco</a>
+						 <button href="" class="btn btn-light btn-primary-s">Conta Pessoal</button>
+						 <a href="Exeple.html" class="btn btn-light">A Empresa</a>
 					</div>
 				</td>
 				
@@ -86,8 +86,9 @@
 		</tr>
 	</table>
 <!--*************************************************Rodapé*******************************************************-->	
+<!--------------------------------------PHP-------------------------------->
 <?php 
-	if(!isset($_SESSION['user_nome'])){ ?>
+	if(!isset($_SESSION['nome_usuario'])){ ?>
 		<div style="position:fixed; bottom:0px"> <!--colocar em um if de detecção de sessão-->
 			<div class="alert alert-warning alert-dismissible fade show"><strong>Não foi detectado Login ao sistema</strong></div>
 		</div>
