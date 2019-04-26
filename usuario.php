@@ -77,11 +77,11 @@
 					<a href="arquivos.php" target="contentiframe" class="d-inline p-1 btn-block btn submenu">
 						Arquivos
 					</a>
-					<a href="download.php" target="contentiframe" class="d-inline p-1 btn-block btn submenu">
-						Arquivos Compartilhados
+					<a href="compartilhar.php" target="contentiframe" class="d-inline p-1 btn-block btn submenu">
+						Compartilhar
 					</a>
-					<a href="download.php" target="contentiframe" class="d-inline p-1 btn-block btn submenu" >
-						Conta Pessoal
+					<a href="compartilhado.php" target="contentiframe" class="d-inline p-1 btn-block btn submenu" >
+						Compartilhados Comigo
 					</a>
 				</div>
 			</div>

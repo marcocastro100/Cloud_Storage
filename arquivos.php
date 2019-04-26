@@ -14,6 +14,7 @@
 		.border{border:1px solid silver; margin:0px;padding:10px}
 		.col-sm{font-family:arial;}
 		.btn-arquivos{width:120px;height:20px}
+        .icone{'width:30px;height:30px;magin:0px;padding:0px}
 		</style>
 </head>
 <?php
@@ -96,7 +97,7 @@
 					}
 				}
 				else{
-					echo"Problema na query";
+					echo"Você não possui arquivos ainda";
 				}
 			}
 			else{
@@ -111,7 +112,7 @@
 							echo "
 							<div class='row border'>
 								<div class='col-sm'>
-                                 <img src='$icone' style='width:30px;height:30px;magin:0px;padding:0px'>
+                                 <img src='$icone'>
 								</div>
 								<div class='col-sm'>
 									$nome
