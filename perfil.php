@@ -62,7 +62,7 @@
         //Apagar arquivo do servidor antes de apagar no bd
         $select="select * from arquivos where id_usuario =".$_SESSION['id_usuario'].";";
         $select = mysqli_query($conexao,$select);
-        while($query=mysqli_fetch_assoc()){unlink($query['link_arquivo']);}
+        while($query=mysqli_fetch_assoc($select)){unlink($query['link_arquivo']);}
         //apaga todos os dados do usuario no servido na ordem de compartilhamento(rem e dest),arquivos e usuario
         $delete_compartilhamento = "delete from compartilhamento where id_remetente =".$_SESSION['id_usuario'].";";
         if(mysqli_query($conexao,$delete_compartilhamento)){echo'deletado remetente<br>';}else{'nao remetente<br>';}
