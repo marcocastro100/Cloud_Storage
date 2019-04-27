@@ -29,12 +29,12 @@ $_SESSION['feed'] = "";
 			while($row = mysqli_fetch_assoc($caminho)){$caminho2 = $row['link_arquivo'];}//transforma a query em texto
 		//query para deletar o arquivo do banco de dados
 		$id_excluir = $_POST['excluir'];
-		$delete_query = 'delete from arquivos where id_arquivo = '.$id_excluir.';';
+		$delete_query = "call delete_arquivos(".$id_excluir.");";
 		if(mysqli_query($conexao,$delete_query)){
 			unlink($caminho2);	//função que deleta o arquivo no servidor
 			$_SESSION['feed'] = "Deletado!";
 		}
-		else{$_SESSION['feed'] = "Erro ao deletar!".$id_excluir;}
+		else{$_SESSION['feed'] = "Erro ao deletar,arquivo pode estar sendo compartilhado!";}
 	}
 	//Adicionar arquivos
 	if(isset($_POST['adicionar'])){	//se o botão de adição for acionado, a pagina é redirecionada para upload.php

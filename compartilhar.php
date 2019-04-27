@@ -26,8 +26,7 @@ $_SESSION['feed'] = "";
         $id_arq_comp = $_POST['arq_comp'];
         $id_remetente = $_SESSION['id_usuario'];
         $id_destinatario = $_POST['compartilhar'];
-        $insert_compartilhamento = "insert into compartilhamento (id_arquivo,id_remetente,id_destinatario) values(
-            ".$id_arq_comp.",".$id_remetente.",".$id_destinatario.");";
+        $insert_compartilhamento = "call insert_compartilhamento(".$id_arq_comp.",".$id_remetente.",".$id_destinatario.");";
         if($insert_compartilhamento = mysqli_query($conexao,$insert_compartilhamento)){
             $_SESSION['feed'] = 'Arquivo Compartilhado com Sucesso!';
         }

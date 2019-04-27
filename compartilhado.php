@@ -21,7 +21,35 @@ $_SESSION['feed'] = "";
 </head>
 <?php
     $conexao = mysqli_connect("localhost","root","790084","repositorio") or die("Não foi possivel connectar ao BD");
-
+    /*Realiza uma consulta sql fazendo uma junção das tables compartilhamento,usuario e arquivos para
+    gerar uma table com os arquivos que foram compartilhados com o usuario logado na sessão, portanto
+    mostrando os arquivos contidos na table compartilhamento para exibição dos arquivos corretos,
+    junção em arquivos para poder linkar o link para download e carregamento de icone, além de mostrar o nome,
+    junção com usuario para mostrar o nome do usuario remetente(que compartilhou o arquivo com o usuario atual do sistema)
+    usado com o while(mysqli-fetcho-assoc) para poder ler todas as linhas no loop while
+    */
+    $selectglobal = "
+    select 
+        compartilhamento.id_arquivo,
+        compartilhamento.id_remetente,
+        compartilhamento.id_destinatario,
+        arquivos.id_arquivo,
+        arquivos.id_usuario,
+        arquivos.nome_arquivo,
+        arquivos.extensao_arquivo,
+        arquivos.tamanho_arquivo,
+        arquivos.link_arquivo,
+        arquivos.link_icone,
+        usuario.id_usuario,
+        usuario.nome_usuario,
+        usuario.cidade_usuario,
+        usuario.email_usuario,
+        usuario.senha_usuario
+    from compartilhamento join arquivos on arquivos.id_arquivo = compartilhamento.id_arquivo
+        join usuario on compartilhamento.id_remetente = usuario.id_usuario
+    where compartilhamento.id_destinatario = ".$_SESSION['id_usuario'].";
+    ";
+    $selectglobal = mysqli_query($conexao,$selectglobal);
 ?>
 <body>
 	<div class='conteiner' align='center' >
@@ -45,106 +73,58 @@ $_SESSION['feed'] = "";
 
         <?php
             if(!(isset($_POST['filtro']))){
-                $select_compartilhamento = 'select * from compartilhamento;';
-                $select_compartilhamento = mysqli_query($conexao,$select_compartilhamento);
-                while($query = mysqli_fetch_assoc($select_compartilhamento)){
-                    $id_arq_comp = $query['id_arquivo'];
-                    $id_remetente = $query['id_remetente'];
-                    $id_destinatario = $query['id_destinatario'];
-
-                    $select_arquivos = 'select * from arquivos where id_arquivo ='.$id_arq_comp.';'; //apenas arquivos compartilhados
-                    $select_arquivos = mysqli_query($conexao,$select_arquivos);
-                    while($query2 = mysqli_fetch_assoc($select_arquivos)){   //arquivos
-                        $id_arquivo = $query2['id_arquivo'];
-                        $id_usuario = $query2['id_usuario'];
-                        $nome_arquivo = $query2['nome_arquivo'];
-                        $extensao_arquiivo = $query2['extensao_arquivo'];
-                        $tamanho_arquivo = round($query2['tamanho_arquivo'] / 1000);
-                        $link_arquivo = $query2['link_arquivo'];
-                        $link_icone = $query2['link_icone'];
-
-                        $select_usuarios = 'select * from usuario where id_usuario = '.$id_remetente.';';
-                        $select_usuarios = mysqli_query($conexao,$select_usuarios);
-                        while($query3 = mysqli_fetch_assoc($select_usuarios)){
-                            if($id_destinatario == $_SESSION['id_usuario']){
-                                $nome_usuario = $query3['nome_usuario'];
-                                echo"
-                                    <div class='row border'>
-                                        <div class='col-sm'>
-                                            <img src='$link_icone' class='icone'>
-                                        </div>
-                                        <div class='col-sm'>
-                                            $nome_arquivo
-                                        </div>
-                                        <div class='col-sm'>
-                                            $tamanho_arquivo Kb
-                                        </div>
-                                        <div class='col-sm'>
-                                            $nome_usuario
-                                        </div>
-                                        <div class='col-sm'>
-                                            <div class='col-sm'>
-                                                <a href='$link_arquivo' download>
-                                                    <button class='badge-primary badge btn btn-arquivos' name='download' value='$id_arquivo'>Download</button>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ";
-                            }
-                        }
-                    }
+                while($query0 = mysqli_fetch_assoc($selectglobal)){
+                    echo"
+                        <div class='row border'>
+                            <div class='col-sm'>
+                                <img src='$query0[link_icone]' class='icone'>
+                            </div>
+                            <div class='col-sm'>
+                                $query0[nome_arquivo]
+                            </div>
+                            <div class='col-sm'>
+                                $query0[tamanho_arquivo] Kb
+                            </div>
+                            <div class='col-sm'>
+                                $query0[nome_usuario]
+                            </div>
+                            <div class='col-sm'>
+                                <div class='col-sm'>
+                                    <a href='$query0[link_arquivo]' download>
+                                        <button class='badge-primary badge btn btn-arquivos' name='download'>Download</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    ";
                 }
             }   
             else{
-                $select_compartilhamento = 'select * from compartilhamento;';
-                $select_compartilhamento = mysqli_query($conexao,$select_compartilhamento);
-                while($query = mysqli_fetch_assoc($select_compartilhamento)){
-                    $id_arq_comp = $query['id_arquivo'];
-                    $id_remetente = $query['id_remetente'];
-                    $id_destinatario = $query['id_destinatario'];
-
-                    $select_arquivos = 'select * from arquivos where id_arquivo ='.$id_arq_comp.';'; //apenas arquivos compartilhados
-                    $select_arquivos = mysqli_query($conexao,$select_arquivos);
-                    while($query2 = mysqli_fetch_assoc($select_arquivos)){   //arquivos
-                        $id_arquivo = $query2['id_arquivo'];
-                        $id_usuario = $query2['id_usuario'];
-                        $nome_arquivo = $query2['nome_arquivo'];
-                        $extensao_arquivo = $query2['extensao_arquivo'];
-                        $tamanho_arquivo = round($query2['tamanho_arquivo'] / 1000);
-                        $link_arquivo = $query2['link_arquivo'];
-                        $link_icone = $query2['link_icone'];
-
-                        $select_usuarios = 'select * from usuario where id_usuario = '.$id_remetente.';';
-                        $select_usuarios = mysqli_query($conexao,$select_usuarios);
-                        while($query3 = mysqli_fetch_assoc($select_usuarios)){
-                            if($id_destinatario == $_SESSION['id_usuario'] && $extensao_arquivo == $_POST['filtro']){
-                                $nome_usuario = $query3['nome_usuario'];
-                                echo"
-                                    <div class='row border'>
-                                        <div class='col-sm'>
-                                            <img src='$link_icone' class='icone'>
-                                        </div>
-                                        <div class='col-sm'>
-                                            $nome_arquivo
-                                        </div>
-                                        <div class='col-sm'>
-                                            $tamanho_arquivo Kb
-                                        </div>
-                                        <div class='col-sm'>
-                                            $nome_usuario
-                                        </div>
-                                        <div class='col-sm'>
-                                            <div class='col-sm' style='margin-top:5px'>
-                                                <a href='$link_arquivo' download>
-                                                    <button class='badge-primary badge btn btn-arquivos' name='download' value='$id_arquivo'>Download</button>
-                                                </a>
-                                            </div>
-                                        </div>
+                while($query0 = mysqli_fetch_assoc($selectglobal)){
+                    if($query0['extensao_arquivo'] == $_POST['filtro']){
+                        echo"
+                            <div class='row border'>
+                                <div class='col-sm'>
+                                    <img src='$query0[link_icone]' class='icone'>
+                                </div>
+                                <div class='col-sm'>
+                                    $query0[nome_arquivo]
+                                </div>
+                                <div class='col-sm'>
+                                    $query0[tamanho_arquivo] Kb
+                                </div>
+                                <div class='col-sm'>
+                                    $query0[nome_usuario]
+                                </div>
+                                <div class='col-sm'>
+                                    <div class='col-sm'>
+                                        <a href='$query0[link_arquivo]' download>
+                                            <button class='badge-primary badge btn btn-arquivos' name='download'>Download</button>
+                                        </a>
                                     </div>
-                                ";
-                            }
-                        }
+                                </div>
+                            </div>
+                        ";
                     }
                 }
             }

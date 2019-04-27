@@ -52,12 +52,13 @@ $_SESSION['feed'] = "";
             if(strlen($_POST['newemail']) == 0){$_POST['newemail'] = $email;}
             if(strlen($_POST['newsenha']) == 0){$POST['newsenha'] = $senha;}
             //query
-            $update_usuario = "update usuario set 
-            nome_usuario ='".$_POST['newnome']."',
-            cidade_usuario ='".$_POST['newcidade']."',
-            email_usuario ='".$_POST['newemail']."',
-            senha_usuario ='".$_POST['newsenha']."'
-            where id_usuario =".$_SESSION['id_usuario'].";";
+            $update_usuario = "call update_usuario(
+                ".$_SESSION['id_usuario'].",
+                '".$_POST['newnome']."',
+                '".$_POST['newcidade']."',
+                '".$_POST['newemail']."',
+                '".$_POST['newsenha']."'
+            );";
 
             if(mysqli_query($conexao,$update_usuario)){
                 $_SESSION['feed'] = "Edicao feita!";
@@ -73,22 +74,31 @@ $_SESSION['feed'] = "";
     }
 
     if(isset($_POST['excluir_perfil'])){
-        if($_POST['confirmpassword'] == $_SESSION['senha_usuario']){
+        if($_POST['confirmpassword'] == $_SESSION['senha_usuario']){    //verificação de senha de confirmação de exclusão
+
             //Apagar arquivos do servidor antes de apagar no bd com unlink
             $select="select * from arquivos where id_usuario =".$_SESSION['id_usuario'].";";
             $select = mysqli_query($conexao,$select);
             while($query=mysqli_fetch_assoc($select)){unlink($query['link_arquivo']);}
+
             //apaga todos os dados do usuario no servido na ordem de compartilhamento(rem e dest),arquivos e usuario
-            $delete_compartilhamento = "delete from compartilhamento where id_remetente =".$_SESSION['id_usuario'].";";
-            if(mysqli_query($conexao,$delete_compartilhamento)){echo'deletado remetente<br>';}else{'nao remetente<br>';}
-            $delete_comp = "delete from compartilhamento where id_remetente =".$_SESSION['id_usuario'].";";
-            if(mysqli_query($conexao,$delete_comp)){echo'deletado destinatario<br>';}else{'nao destinatario<br>';}
-            $delete_arquivos = "delete from arquivos where id_usuario =".$_SESSION['id_usuario'].";";
-            if(mysqli_query($conexao,$delete_arquivos)){echo'deletado arquivos<br>';}else{'nao arquivos<br>';}
-            $delete_usuario = "delete from usuario where id_usuario =".$_SESSION['id_usuario'].";";
-            if(mysqli_query($conexao,$delete_usuario)){echo'deletado usuario<br>';}else{'nao usuario<br>';}
-            session_unset();
-            session_destroy();
+            mysqli_query($conexao,'start transaction;');
+            mysqli_query($conexao,"delete from compartilhamento where id_remetente =".$_SESSION['id_usuario'].";");
+            mysqli_query($conexao,"delete from compartilhamento where id_destinatario =".$_SESSION['id_usuario'].";");
+            mysqli_query($conexao,"delete from arquivos where id_usuario =".$_SESSION['id_usuario'].";");
+            mysqli_query($conexao,"delete from usuario where id_usuario =".$_SESSION['id_usuario'].";");
+            if( //caso algum resultado ainda esteja sendo apresentado.. desfazer, caso contrario commit e sair da sessão
+                mysqli_num_rows(mysqli_query($conexao,"select * from compartilhamento where id_remetente =".$_SESSION['id_usuario'].";")) > 0 |
+                mysqli_num_rows(mysqli_query($conexao,"select * from compartilhamento where id_destinatario =".$_SESSION['id_usuario'].";")) > 0 |
+                mysqli_num_rows(mysqli_query($conexao,"select * from arquivos where id_usuario =".$_SESSION['id_usuario'].";")) >0 |
+                mysqli_num_rows(mysqli_query($conexao,"select * from usuario where id_usuario =".$_SESSION['id_usuario'].";")) > 0
+            ){mysqli_query('rollback');echo "OPSS";}
+            else{
+                mysqli_query($conexao,'commit');
+                $_SESSION['feed'] = 'Usuario deletado!';
+                session_unset();
+                session_destroy();
+            }
         }
         else{$_SESSION['feed'] = "Senha invalida!";}
     }

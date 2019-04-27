@@ -16,12 +16,11 @@
 <!--**********************************************Verificão de Formulario****************************************-->
 <?php
 	if( isset($_POST['inputnome'])){	//Condição de primeira visita à pagina para rodar o php
-		$conexao = mysqli_connect("localhost","root","790084","repositorio") or die("Não conectado!");	//Conexão banco de dados especificamente pagin
-		
-		//Query de inserção na tabela usuarios, pegando para cada valor a ser adicionado na estrutura as variaveis de formularios atravez de $_POST
-		$insert = "insert into usuario (nome_usuario,cidade_usuario,email_usuario,senha_usuario) values	
-		('$_POST[inputnome]','$_POST[inputcidade]','$_POST[inputemail]','$_POST[inputsenha]')";
-		
+        $conexao = mysqli_connect("localhost","root","790084","repositorio") or die("Não conectado!");	//Conexão banco de dados especificamente pagin
+        
+        $insert =  "call insert_usuario('".$_POST['inputnome']."','".$_POST['inputcidade']."','"
+            .$_POST['inputemail']."','".$_POST['inputsenha']."');";
+            
 		//verifica se cada formulario tem um tamanho maior que 1 caractere para validar o cadastro
 		if(strlen($_POST['inputnome']) > 0 && strlen($_POST['inputcidade']) > 0 && strlen($_POST['inputemail']) >0 && strlen($_POST['inputsenha']) > 0){
 			if(mysqli_query($conexao,$insert)){

@@ -52,9 +52,8 @@ $_SESSION['feed'] = ""; //define a variavel de sessão para mostrar feed como nu
             $uploadok = 0;
         }
         else{
-            //Adicionar os dados do arquivo ao banco de dados (SEM ACENTOS NO NOME!! incompativel com mysql string?)
-            $inserquery = "insert into arquivos (id_usuario,nome_arquivo,extensao_arquivo,tamanho_arquivo,link_arquivo,link_icone)
-            values (
+            //Adicionar os dados do arquivo ao banco de dados
+            $inserquery = "call insert_arquivos(
                 '$_SESSION[id_usuario]',
                 '$nome_arquivo',
                 '$tipo_arquivo',
