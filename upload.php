@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php session_start();
+$_SESSION['feed'] = ""; //define a variavel de sessão para mostrar feed como nula sempre que uma pagina for carregada
+?>
 <html>
 <head>
 	<!------------------------------------Configuration Bootstrap--------------------------->
@@ -9,13 +11,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!------------------------------------Style CSS-------------------------------------------->
-    <style></style>
+    <style>.feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}</style>
 </head>
 <?php
     if(isset($_FILES["uploadfile"])){
         $conexao = mysqli_connect("localhost","root","790084","repositorio") or die("fail connect"); #Tenta conectar à base de dados e ao banco 'pagin'
 
-        $nome_arquivo =  $_FILES['uploadfile']['name'];
+        $nome_arquivo =  str_replace("'","",$_FILES['uploadfile']['name']); //str_replace:troca caracteres para não dar interferencia na adição do banco de dados
+        $nome_arquivo =  str_replace('"','',$_FILES['uploadfile']['name']);
         $tamanho_arquivo = $_FILES['uploadfile']['size'];
 
         $diretorio_arquivos = "upload/"; //onde o arquivo será armazenado no servidor(pasta upload)
@@ -25,9 +28,10 @@
         $uploadok = 1;
         $icone = "icones/"; //icone que aparece no repositorio
 
-        $nome_arquivo = preg_replace('/[^.[:alnum:]_-]/', '',$_FILES["uploadfile"]["name"]);
-        $caminho_arquivo = $diretorio_arquivos.basename( preg_replace('/[^.[:alnum:]_]/', '',$_FILES["uploadfile"]["name"]));
-        
+        //$nome_arquivo = preg_replace('/[^.[:alnum:]_-]/', '',$_FILES["uploadfile"]["name"]);
+        //$caminho_arquivo = $diretorio_arquivos.basename( preg_replace('/[^.[:alnum:]_]/', '',$_FILES["uploadfile"]["name"]));
+        $nome_arquivo = str_replace("'","",$nome_arquivo);
+        $caminho_arquivo = $diretorio_arquivos.$nome_arquivo;
         //Selecionar inteiro correspondente ao tipo (estrutura interna do bd, tipo de arquivo = int)
         switch($tipo_arquivo){
             case "pdf": $tipo_arquivo=1;$icone = $icone.'pdf.png';break;
@@ -44,7 +48,7 @@
         }
         // Check if file already exists
         if (file_exists($caminho_arquivo)) {
-            echo "Arquivo Existente";
+            $_SESSION['feed'] =  "Arquivo Existente";
             $uploadok = 0;
         }
         else{
@@ -59,19 +63,19 @@
                 '$icone'
             )";
             if(mysqli_query($conexao,$inserquery)){
-                $uploadok = 1;    //sucesso
+                
             }
             else{
                 $uploadok = 0;
-                echo"Falha ao enviar para o servidor!"; 
+                $_SESSION['feed'] = "Falha ao enviar para o BD!"; 
             }
             //Tenta mover o arquivo para o servidor
             if($uploadok == 1){
                 if(move_uploaded_file($_FILES['uploadfile']['tmp_name'],$caminho_arquivo)){
-                    echo"Enviado com Sucesso!";
+                    $_SESSION['feed'] = "Enviado com Sucesso!";
                 }
                 else{
-                    echo"Falha ao mover arquivo para o servidor!";
+                    $_SESSION['feed'] = "Falha ao mover arquivo para o servidor!";
                 }
             }
         }
@@ -82,13 +86,13 @@
         <tr>
             <td style="padding-top:100px">
                 <form action="<?php echo $_SERVER['PHP_SELF'];  ?>" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="tamanho_max" value="30000000">
+                    <input type="hidden" name="MAX_FILE_SIZE" value="300000">
                     <input type="file" class="form-control-file" name="uploadfile"><br>
                     <button type="submit" class="btn btn-primary" name="submit">Enviar Arquivo</button>
                 </form>
             </td>
         </tr>
     </table>
-    
+    <input type='text' name='feed' class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
 </body>
 </html>

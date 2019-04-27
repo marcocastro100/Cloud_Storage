@@ -12,7 +12,7 @@
 	<style>
 		table,th,td,span,div,nav,a{border:0px solid black;}
 		.logo{height:70px}
-		.jumbotron{height:110px;padding:0px;margin:0px}
+		.jumbotron{height:110px;padding:0px;margin:0px;background-color:e6e6e6}
 		table{magin:0px;padding:0px}
 		.menubtn{width:150px;border-radius:10px}	
 		.btn-l{width:170px}
@@ -69,7 +69,7 @@
 		</table>
 	</div>
 <!--*************************************************Sub Menu*******************************************************-->
-	<table width="100%" height="100%">
+	<table width="100%" height="82%">
 		<tr>
 			<td width="20%" style="height:100%;background-color:e6e6e6">
 			<div style="height:100%;background-color:#e6e6e6">
@@ -93,7 +93,7 @@
 			<td>
 				<div style="width:100%;height:100%;">
 					<iframe name="contentiframe" style="height:100%;width:95%;border:0.02px solid silver; background-color:white;" src="<?php echo $_SERVER['PHP_SEF'];?>">
-						
+                        
 					</iframe>
 				</div>
 			</td>
@@ -113,6 +113,6 @@
 					<strong>Conectado ao Sistema</strong>
 				</div>
 			</div>
-	<?php } ?>
+    <?php } ?>
 </body>
 </html>

@@ -10,11 +10,39 @@ create table usuario(
     primary key(id_usuario)
 );
 
+delimiter /
+	create procedure insert_usuario(nome varchar(50),cidade varchar(50),email varchar(50),senha varchar(20))
+    begin
+		insert into usuario (nome_usuario,cidade_usuario,email_usuario,senha_usuario)
+        values (nome,cidade,email,senha);
+    end;
+/
+
+delimiter /
+	create procedure update_usuario(nome varchar(50),cidade varchar(50),email varchar(50),senha varchar(20))
+    begin
+		update usuario set nome_usuario = nome,cidade_usuario = cidade, email_usuario = email,senha_usuario = senha;
+    end;
+/
+
+delimiter /
+	create procedure delete_usuario(id integer(5))
+    begin
+		delete from usuario where id_usuario = id;
+    end;
+/
+
 create table extensao(
 	id_extensao integer(3) not null,
     extensao varchar(10) not null,
     primary key(id_extensao)
 );
+delimiter /
+	create procedure insert_extensao(id integer(3),extensao varchar(10))
+    begin
+		insert into extensao values(id,extensao);
+    end;
+/
 
 create table arquivos(
 	id_arquivo integer(4) not null auto_increment,
@@ -28,6 +56,20 @@ create table arquivos(
     foreign key(extensao_arquivo) references extensao (id_extensao),
     foreign key(id_usuario) references usuario(id_usuario)
 );
+delimiter/
+	create procedure insert_arquivos(id_user integer(5),nome varchar(200),extensao integer(3),
+		tamanho float,link_arq varchar(200),link_icon varchar(200))
+        begin
+			insert into arquivos(id_usuario,nome_arquivo,extensao_arquivo,tamanho_arquivo,link_arquivo,link_icone)
+            values(id_user,nome,extensao,tamanho,link_arq,link_icon);
+        end;
+/
+delimiter /
+	create procedure delete_arquivos(id_arq integer(4))
+    begin
+		delete from arquivos where id_arquivo = id_arq;
+    end;
+/
 
 create table compartilhamento(
 	id_arquivo integer(4) not null,
@@ -38,5 +80,11 @@ create table compartilhamento(
     foreign key(id_remetente) references usuario(id_usuario),
     foreign key(id_destinatario) references usuario(id_usuario)
 );
+delimiter /
+	create procedure insert_compartilhamento(id_arq integer(4),id_remet integer(5),id_dest integer(5))
+    begin
+		insert into compartilhamento values (id_arq,id_remet,id_dest);
+    end;
+/
 
 insert into extensao values (001,'pdf'),(002,'doc'),(003,'txt'),(004,'jpg'),(005,'png'),(006,'mp4'),(007,'docx'),(008,'gif'),(009,'php'),(010,'html');

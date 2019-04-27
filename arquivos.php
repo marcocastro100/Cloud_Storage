@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php session_start();
+$_SESSION['feed'] = "";
+?>
 <html>
 <head>
 	<!------------------------------------Configuration Bootstrap--------------------------->
@@ -10,11 +12,11 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!------------------------------------Style CSS-------------------------------------------->
     <style>
-		table,td,tr{border:1px solid silver;text-align:center}
-		.border{border:1px solid silver; margin:0px;padding:10px}
+		.border{border:1px solid silver; margin:0px;padding:9px}
 		.col-sm{font-family:arial;}
-		.btn-arquivos{width:120px;height:20px}
-        .icone{'width:30px;height:30px;magin:0px;padding:0px}
+		.btn-arquivos{width:120px;height:22px;}
+        .icone{width:30px;height:30px;margin:0px;padding:0px}
+        .feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
 		</style>
 </head>
 <?php
@@ -30,9 +32,9 @@
 		$delete_query = 'delete from arquivos where id_arquivo = '.$id_excluir.';';
 		if(mysqli_query($conexao,$delete_query)){
 			unlink($caminho2);	//função que deleta o arquivo no servidor
-			echo "Deletado!";
+			$_SESSION['feed'] = "Deletado!";
 		}
-		else{echo "Erro ao deletar!";}
+		else{$_SESSION['feed'] = "Erro ao deletar!".$id_excluir;}
 	}
 	//Adicionar arquivos
 	if(isset($_POST['adicionar'])){	//se o botão de adição for acionado, a pagina é redirecionada para upload.php
@@ -60,7 +62,8 @@
 		</div>
 		<?php
 			$select_query = "select * from arquivos where id_usuario = ".$_SESSION['id_usuario'].";";
-			$result = mysqli_query($conexao,$select_query);
+            $result = mysqli_query($conexao,$select_query);
+            //Gerar tabela de arquivos
 			if(!isset($_POST['filtro'])){
 				if(mysqli_num_rows($result)){
 					while($row = mysqli_fetch_assoc($result)){
@@ -73,7 +76,7 @@
 							echo "
 								<div class='row border'>
 									<div class='col-sm'>
-										<img src='$icone' style='width:30px;height:30px;magin:0px;padding:0px'>
+										<img src='$icone' class='icone'>
 									</div>
 									<div class='col-sm'>
 										$nome
@@ -81,12 +84,12 @@
 									<div class='col-sm '>
 										$tamanho Kb
 									</div>
-									<div class='col-sm' style='margin-top:5px'>
+									<div class='col-sm'>
 										<a href='$link' download>
 											<button class='badge-primary badge btn btn-arquivos' name='download' value='$id'>Download</button>
 										</a>
 									</div>
-									<div class='col-sm' style='margin-top:5px'>
+									<div class='col-sm'>
 										<form action='arquivos.php' method='post' target='_self'>
 											<button type='submit' class='badge-danger badge btn btn-arquivos' name='excluir' value='$id'>Excluir</button>
 										</form>
@@ -97,7 +100,7 @@
 					}
 				}
 				else{
-					echo"Você não possui arquivos ainda";
+					$_SESSION['feed'] = "Você não possui arquivos ainda";
 				}
 			}
 			else{
@@ -112,7 +115,7 @@
 							echo "
 							<div class='row border'>
 								<div class='col-sm'>
-                                 <img src='$icone'>
+                                 <img src='$icone' class='icone'>
 								</div>
 								<div class='col-sm'>
 									$nome
@@ -120,12 +123,12 @@
 								<div class='col-sm '>
 									$tamanho Kb
 								</div>
-								<div class='col-sm' style='margin-top:5px'>
+								<div class='col-sm'>
 									<a href='$link' download>
 										<button class='badge-primary badge btn btn-arquivos' name='download' value='$id'>Download</button>
 									</a>
 								</div>
-								<div class='col-sm' style='margin-top:5px'>
+								<div class='col-sm'>
 									<form action='arquivos.php' method='post' target='_self'>
 										<button type='submit' class='badge-danger badge btn btn-arquivos' name='excluir' value='$id'>Excluir</button>
 									</form>
@@ -136,7 +139,7 @@
 					}
 				}
 				else{
-					echo"Problema na query";
+					$_SESSION['feed'] = "Problema na query";
 				}
 			}
 		?>
@@ -165,7 +168,7 @@
 				</div>
 			</div>
 		</form>
-		
-	</div>
+    </div>
+    <input type='text' name='feed' class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
 </body>
 </html>

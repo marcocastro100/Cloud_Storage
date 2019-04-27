@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php session_start();
+$_SESSION['feed'] = "";
+?>
 <html>
 <head>
 	<!------------------------------------Configuration Bootstrap--------------------------->
@@ -10,11 +12,11 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!------------------------------------Style CSS-------------------------------------------->
     <style>
-		table,td,tr{border:1px solid silver;text-align:center}
-		.border{border:1px solid silver; margin:0px;padding:10px}
+		.border{border:1px solid silver; margin:0px;padding:9px}
 		.col-sm{font-family:arial;}
-		.btn-arquivos{width:120px;height:22;border:0px solid silver}
+		.btn-arquivos{width:120px;height:22px;}
         .icone{width:30px;height:30px;margin:0px;padding:0px}
+        .feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
 		</style>
 </head>
 <?php
@@ -81,7 +83,7 @@
                                             $nome_usuario
                                         </div>
                                         <div class='col-sm'>
-                                            <div class='col-sm' style='margin-top:5px'>
+                                            <div class='col-sm'>
                                                 <a href='$link_arquivo' download>
                                                     <button class='badge-primary badge btn btn-arquivos' name='download' value='$id_arquivo'>Download</button>
                                                 </a>
@@ -170,6 +172,7 @@
 				</div>
 			</div>
 		</form>
-	</div>
+    </div>
+    <input type='text' name='feed' class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
 </body>
 </html>

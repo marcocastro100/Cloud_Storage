@@ -25,7 +25,7 @@
 		if (mysqli_num_rows($select) > 0) {	//conta o numero de linhas retornadas da consulta, se for maior que 0 linhas, um loop é feito mostrando o resultado
 		// output data of each row
 			while($row = mysqli_fetch_assoc($select)) {	//enquanto houver linhas da consulta ainda não exibidas, a var row assume o conteudo dessas linhas de forma associativa, combinando os resultados em vetores com posições(com nomes dos atributos) da tabela
-				//echo "Email: ".$row["email"]."<br>-Password: ".$row["password"]."<br><br>";	//Mostra o output dos dados dp bd
+				
 				if ($_POST["inputemail"]==$row["email_usuario"] && $_POST["inputpassword"] == $row["senha_usuario"]) //faz a comparação dos dados em formulario(identificados pelos names=input...) obtidos atravez da supervariavel $_GET com os dados retornados do bd, caso um dê match, é exibido a mensagem
 				{
 					//Guarda os dados do usuario autenticado em variaveis de sessão
@@ -33,7 +33,8 @@
 					$_SESSION['nome_usuario'] = $row['nome_usuario'];
 					$_SESSION['cidade_usuario'] = $row['cidade_usuario'];
 					$_SESSION['email_usuario'] = $row['email_usuario'];
-					$_SESSION['senha_usuario'] = $row['senha_usuario'];
+                    $_SESSION['senha_usuario'] = $row['senha_usuario'];
+                    $_SESSION['feed'] = ""; //variavel de feedback feito em textbox no iframe da pagina de usuario
 					//Redireciona à pagina de usuario
 					echo("<script language='javascript' type='text/javascript'> alert('Logado com Sucesso!'); window.location.href = 'usuario.php'</script>");
 				}
@@ -41,7 +42,7 @@
 			echo("<script language='javascript' type='text/javascript'> alert('login e/ou senha incorretos'); window.location.href = 'login.php'</script>");
 		}
 		else {
-			echo "0 results";
+			$_SESSION['feed'] =  "0 results";
 		}
 	}
 	?>
@@ -58,8 +59,9 @@
 						<input type="email" name="inputemail" class="form-control" placeholder="Endereço de Email"></input>
 						<input type="password" name="inputpassword" class="form-control" placeholder="Senha"></input><br>
 						<button type="submit" class="btn btn-primary btn-block btn-lg">Acessar</button>
-					</form>
-				</div>
+                    </form>
+                </div>
+                <a href='index.php' class='badge badge-secondary' sytle='margin-top:5px; width:40px; height:50px'>Voltar</a>
 			</td>
 		</tr>
 	</table>

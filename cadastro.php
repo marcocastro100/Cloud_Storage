@@ -49,9 +49,9 @@
 						<input type="email" name="inputemail" class="form-control" placeholder="Endereço de Email">
 						<input type="password" name="inputsenha" class="form-control" placeholder="Senha"><br>
 						<button type="submit" class="btn btn-primary btn-block btn-lg">Requisitar Cadastro</button>
-					
-				</h2></form></div>
-			</td>
+                </h2></form></div>
+                <a href='index.php' class='badge badge-secondary' sytle='margin-top:5px; width:40px; height:50px'>Voltar</a>
+            </td>
 		</tr>
 	</tbody></table>
 	</div>

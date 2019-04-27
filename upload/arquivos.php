@@ -30,9 +30,9 @@
 		$delete_query = 'delete from arquivos where id_arquivo = '.$id_excluir.';';
 		if(mysqli_query($conexao,$delete_query)){
 			unlink($caminho2);	//função que deleta o arquivo no servidor
-			echo "Deletado!";
+			$_SESSION['feed'] =  "Deletado!";
 		}
-		else{echo "Erro ao deletar!";}
+		else{$_SESSION['feed'] =  "Erro ao deletar!";}
 	}
 	//Adicionar arquivos
 	if(isset($_POST['adicionar'])){	//se o botão de adição for acionado, a pagina é redirecionada para upload.php
@@ -97,7 +97,7 @@
 					}
 				}
 				else{
-					echo"Você não possui arquivos ainda";
+					$_SESSION['feed'] = "Você não possui arquivos ainda";
 				}
 			}
 			else{
@@ -136,7 +136,7 @@
 					}
 				}
 				else{
-					echo"Problema na query";
+					$_SESSION['feed'] = "Problema na query";
 				}
 			}
 		?>
