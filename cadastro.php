@@ -6,12 +6,10 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"><!--Modelo CSS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src='script.js'></script>
+    <link rel='stylesheet' href="css.css">
 <!------------------------------------Style CSS-------------------------------------------->
-	<style>
-		table,th,td,span,div{border:0px solid black;}
-		.logo{height:70px}	
-	</style>
 </head>
 <!--**********************************************Verificão de Formulario****************************************-->
 <?php
@@ -34,8 +32,8 @@
 	}
 ?>
 <!--******************************************************Conteudo Pagina***************************************-->
-<body class="text-center">
-	<div class="jumbotron">
+<body class="text-center body">
+	<div>
 	<table width="100%">
 		<tbody><tr height="500px" style="padding-left:500px" align="center">
 			<td>
@@ -47,9 +45,9 @@
 						<input type="text" name="inputcidade" class="form-control" placeholder="Cidade">
 						<input type="email" name="inputemail" class="form-control" placeholder="Endereço de Email">
 						<input type="password" name="inputsenha" class="form-control" placeholder="Senha"><br>
-						<button type="submit" class="btn btn-primary btn-block btn-lg">Requisitar Cadastro</button>
+						<button type="submit" class="btn btn-primary btn-block btn-lg" onclick='anima_click(this)'>Requisitar Cadastro</button>
                 </h2></form></div>
-                <a href='index.php' class='badge badge-secondary' sytle='margin-top:5px; width:40px; height:50px'>Voltar</a>
+                <a href='index.php' class='badge badge-secondary' sytle='margin-top:5px; width:40px; height:50px'onclick='anima_click(this)'>Voltar</a>
             </td>
 		</tr>
 	</tbody></table>

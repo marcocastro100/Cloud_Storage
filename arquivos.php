@@ -9,15 +9,14 @@ $_SESSION['feed'] = "";
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"><!--Modelo CSS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src='script.js'></script>
+    <link rel='stylesheet' href="css.css">
     <!------------------------------------Style CSS-------------------------------------------->
     <style>
-		.border{border:1px solid silver; margin:0px;padding:9px}
-		.col-sm{font-family:arial;}
-		.btn-arquivos{width:120px;height:22px;}
-        .icone{width:30px;height:30px;margin:0px;padding:0px}
-        .feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
-		</style>
+        .row{margin-left:10px;width:98%;border-bottom:0.9px solid silver;border-radius:5px;text-align:center;padding:5px;background-color:white}
+        .col-sm{font-family:arial;width:250px}
+    </style>
 </head>
 <?php
 	$conexao = mysqli_connect("localhost","root","790084","repositorio") or die("fail connect"); #Tenta conectar à base de dados e ao banco 'pagin'
@@ -41,9 +40,9 @@ $_SESSION['feed'] = "";
 		echo("<script language='javascript' type='text/javascript'>window.location.href = 'upload.php'</script>");
 	}
 ?>
-<body>
-	<div class='conteiner' align='center' >
-		<div class='row border'>
+<body class='intro body' style='background-size:1% 100%'>
+	<div class='conteiner'>
+		<div class='row'>
 			<div class='col-sm'>
 				<strong>Type</strong>
 			</div>
@@ -67,14 +66,14 @@ $_SESSION['feed'] = "";
 			if(!isset($_POST['filtro'])){
 				if(mysqli_num_rows($result)){
 					while($row = mysqli_fetch_assoc($result)){
-						if($row['tamanho_arquivo'] > 0){
+						if($row['tamanho_arquivo'] >= 0){
 							$link = $row['link_arquivo'];
 							$nome = $row['nome_arquivo'];
 							$id = $row['id_arquivo'];
 							$icone = $row['link_icone'];
 							$tamanho = round($row['tamanho_arquivo'] / 1000);	//formata para aparece em kb
 							echo "
-								<div class='row border'>
+								<div class='row'>
 									<div class='col-sm'>
 										<img src='$icone' class='icone'>
 									</div>
@@ -86,12 +85,12 @@ $_SESSION['feed'] = "";
 									</div>
 									<div class='col-sm'>
 										<a href='$link' download>
-											<button class='badge-primary badge btn btn-arquivos' name='download' value='$id'>Download</button>
+											<button class='badge-primary badge btn btn-arquivos' name='download' onclick='anima_click(this)'>Download</button>
 										</a>
 									</div>
 									<div class='col-sm'>
 										<form action='arquivos.php' method='post' target='_self'>
-											<button type='submit' class='badge-danger badge btn btn-arquivos' name='excluir' value='$id'>Excluir</button>
+											<button type='submit' class='badge-danger badge btn btn-arquivos' name='excluir' value='$id' onclick='anima_click(this)'>Excluir</button>
 										</form>
 									</div>
 								</div>
@@ -113,7 +112,7 @@ $_SESSION['feed'] = "";
 							$icone = $row['link_icone'];
 							$tamanho = round($row['tamanho_arquivo'] / 1000);	//formata para aparece em kb
 							echo "
-							<div class='row border'>
+							<div class='row'>
 								<div class='col-sm'>
                                  <img src='$icone' class='icone'>
 								</div>
@@ -125,12 +124,12 @@ $_SESSION['feed'] = "";
 								</div>
 								<div class='col-sm'>
 									<a href='$link' download>
-										<button class='badge-primary badge btn btn-arquivos' name='download' value='$id'>Download</button>
+										<button class='badge-primary badge btn btn-arquivos' name='download' onclick='anima_click(this)'>Download</button>
 									</a>
 								</div>
 								<div class='col-sm'>
 									<form action='arquivos.php' method='post' target='_self'>
-										<button type='submit' class='badge-danger badge btn btn-arquivos' name='excluir' value='$id'>Excluir</button>
+										<button type='submit' class='badge-danger badge btn btn-arquivos' name='excluir' onclick='anima_click(this)'>Excluir</button>
 									</form>
 								</div>
 							</div>
@@ -147,7 +146,7 @@ $_SESSION['feed'] = "";
 	<!-----------------------Adicionar Arquivos------------------->
 	</div class='conteiner' style='align:left'>
 		<form action='arquivos.php' method='post' target='_self'>
-			<button type='submit' name='adicionar' class='btn btn-success' style='margin:10px'>Adcionar arquivo</button>
+			<button type='submit' name='adicionar' class='btn btn-success' style='margin:10px' onclick='anima_click(this)'>Adcionar arquivo</button>
 	<!----------------------Filtrar Arquivos----------------------->			
 			<div class="btn-group">
 				<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">

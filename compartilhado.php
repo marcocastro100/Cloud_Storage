@@ -9,14 +9,14 @@ $_SESSION['feed'] = "";
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"><!--Modelo CSS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src='script.js'></script>
+    <link rel='stylesheet' href='css.css'>
     <!------------------------------------Style CSS-------------------------------------------->
     <style>
-		.border{border:1px solid silver; margin:0px;padding:9px}
-		.col-sm{font-family:arial;}
-		.btn-arquivos{width:120px;height:22px;}
-        .icone{width:30px;height:30px;margin:0px;padding:0px}
+		.col-sm{font-family:arial;width:205px}
         .feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
+        .row{width:98%;border-bottom:0.9px solid silver;border-radius:7px;text-align:center;padding:7px;background-color:white}
 		</style>
 </head>
 <?php
@@ -51,9 +51,9 @@ $_SESSION['feed'] = "";
     ";
     $selectglobal = mysqli_query($conexao,$selectglobal);
 ?>
-<body>
+<body class='body' style='background-size:1% 100%'>
 	<div class='conteiner' align='center' >
-		<div class='row border'>
+		<div class='row'>
 			<div class='col-sm'>
 				<strong>Type</strong>
 			</div>
@@ -75,7 +75,7 @@ $_SESSION['feed'] = "";
             if(!(isset($_POST['filtro']))){
                 while($query0 = mysqli_fetch_assoc($selectglobal)){
                     echo"
-                        <div class='row border'>
+                        <div class='row'>
                             <div class='col-sm'>
                                 <img src='$query0[link_icone]' class='icone'>
                             </div>
@@ -91,7 +91,7 @@ $_SESSION['feed'] = "";
                             <div class='col-sm'>
                                 <div class='col-sm'>
                                     <a href='$query0[link_arquivo]' download>
-                                        <button class='badge-primary badge btn btn-arquivos' name='download'>Download</button>
+                                        <button class='badge-primary badge btn btn-arquivos' name='download' onclick='anima_click(this)'>Download</button>
                                     </a>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@ $_SESSION['feed'] = "";
                 while($query0 = mysqli_fetch_assoc($selectglobal)){
                     if($query0['extensao_arquivo'] == $_POST['filtro']){
                         echo"
-                            <div class='row border'>
+                            <div class='row'>
                                 <div class='col-sm'>
                                     <img src='$query0[link_icone]' class='icone'>
                                 </div>
@@ -119,7 +119,7 @@ $_SESSION['feed'] = "";
                                 <div class='col-sm'>
                                     <div class='col-sm'>
                                         <a href='$query0[link_arquivo]' download>
-                                            <button class='badge-primary badge btn btn-arquivos' name='download'>Download</button>
+                                            <button class='badge-primary badge btn btn-arquivos' name='download' onclick='anima_click(this)'>Download</button>
                                         </a>
                                     </div>
                                 </div>

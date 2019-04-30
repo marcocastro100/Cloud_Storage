@@ -9,7 +9,8 @@ $_SESSION['feed'] = ""; //define a variavel de sessão para mostrar feed como nu
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"><!--Modelo CSS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src='script.js'></script>
     <!------------------------------------Style CSS-------------------------------------------->
     <style>.feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}</style>
 </head>
@@ -87,7 +88,7 @@ $_SESSION['feed'] = ""; //define a variavel de sessão para mostrar feed como nu
                 <form action="<?php echo $_SERVER['PHP_SELF'];  ?>" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="MAX_FILE_SIZE" value="300000">
                     <input type="file" class="form-control-file" name="uploadfile"><br>
-                    <button type="submit" class="btn btn-primary" name="submit">Enviar Arquivo</button>
+                    <button type="submit" class="btn btn-primary" name="submit" onclick='anima_click(this)'>Enviar Arquivo</button>
                 </form>
             </td>
         </tr>

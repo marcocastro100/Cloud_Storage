@@ -9,15 +9,13 @@ $_SESSION['feed'] = "";
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"><!--Modelo CSS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src='script.js'></script>
+    <link rel='stylesheet' href='css.css'>
     <!------------------------------------Style CSS-------------------------------------------->
     <style>
-		table,tr,td,div{border:0px solid silver;text-align:center;eaefef}
 		.border{border:1px solid black; margin:0px;padding:10px;border-radius:10px;background-color:white}
-		.col-sm{font-family:arial;}
         .logo{height:90px}
-		.btn-arquivos{width:120px;height:22px;margin-top:10px}
-        .icone{width:30px;height:30px;margin:0px;padding:0px}
         .form-control{border:1px solid silver;border-radius:10px;width:320px;height:30px;margin:0px;padding:2px;margin-left:20px;margin-bottom:5px}
         .feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
 		</style>
@@ -103,21 +101,21 @@ $_SESSION['feed'] = "";
         else{$_SESSION['feed'] = "Senha invalida!";}
     }
 ?>
-</body>
-    <div class='conatainer  border' style='height:100%'>
-        <div class='row border' style='width:800px;height:450px;margin-left:11%;margin-top:1%;background-color:eaefef'>
+<body class='body' style='background-size:1% 100%'>
+    <div class='conatainer' style='height:100%'>
+        <div class='row' style='width:800px;height:450px;margin-left:11%;margin-top:1%;;text-align:center'>
             <div class='col-sm border' style='margin-right:5px'>
-                <div class='border' style='border-radius:1000px;width:130px;height:130px;margin-left:32%;margin-top:30px'>
-                <img src="http://www.stickpng.com/assets/images/5847faf6cef1014c0b5e48cd.png" class="logo"><img>
+                <div class='' style='border-radius:1000px;width:130px;height:130px;margin-left:32%;margin-top:30px'>
+                    <img src="http://www.stickpng.com/assets/images/5847faf6cef1014c0b5e48cd.png" class='logo'>
                 </div>
                 <form action='perfil.php' method='post' target='_self'>
-                    <button type='submit' name='alterar_perfil' class='badge-success badge btn btn-arquivos'>Alterar Perfil</button>
-                        <button type='submit' name='apagar_perfil' class='badge-danger badge btn btn-arquivos'>Excluir Perfil</button>
+                    <button type='submit' name='alterar_perfil' class='badge-success badge btn btn-arquivos'onclick='anima_click(this)'>Alterar Perfil</button>
+                    <button type='submit' name='apagar_perfil' class='badge-danger badge btn btn-arquivos'onclick='anima_click(this)'>Excluir Perfil</button>
                     <?php
                         if(isset($_POST['apagar_perfil'])){
                     ?>
                         <input type='password' name='confirmpassword' class='form-control' placeholder='Password' style='margin-top:10px'>
-                        <button type='submit' name='excluir_perfil' class='badge-primary badge btn btn-arquivos'>Confirmar</button>
+                        <button type='submit' name='excluir_perfil' class='badge-primary badge btn btn-arquivos' onclick='anima_click(this)'>Confirmar</button>
                     <?php
                         }
                     ?>
@@ -170,8 +168,8 @@ $_SESSION['feed'] = "";
                             <input type='password' name='newsenha' class='form-control'>
                             Senha Atual
                             <input type='password' name='oldsenha' class='form-control'>
-                            <button type='submit' name='alteracao' value='<?php echo $id;?>' class='btn btn-success' style='margin-top:3px;margin-left:5px;width:100px'>Aplicar</button>
-                            <a href='perfil.php' class='btn btn-secondary'style='margin-top:3px;margin-left:5px;width:100px'>Cancelar</a>
+                            <button type='submit' name='alteracao' value='<?php echo $id;?>' class='btn btn-success' style='margin-top:3px;margin-left:5px;width:100px' onclick='anima_click(this)'>Aplicar</button>
+                            <a href='perfil.php' class='btn btn-secondary'style='margin-top:3px;margin-left:5px;width:100px' onclick='anima_click(this)'>Cancelar</a>
                         </form>
                 <?php 
                     }

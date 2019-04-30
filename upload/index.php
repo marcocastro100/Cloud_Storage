@@ -11,7 +11,7 @@
 	<!------------------------------------Style CSS-------------------------------------------->
 	<style>
 		table,th,td,span,div,nav,a{border:0px solid black;}
-		.logo{height:70px}
+		.icone{height:70px}
 		table{magin:0px;padding:0px}
 		.menubtn{width:150px;border-radius:10px}	
 		.btn-l{width:170px}
@@ -26,11 +26,11 @@
 <body style="background-color:e6e6e6">
 	<div class="jumbotron">
 		<table width="100%">
-			<tr>
-				<td width="20%" align="center">
+			 <div class='row'>
+				 <div width="20%" align="center">
 					<img src="http://www.stickpng.com/assets/images/5847faf6cef1014c0b5e48cd.png" style="height: 70px	"><img>
-				</td>
-				<td width="50%">
+				 </div>
+				 <div width="50%">
 					<div style="margin-top:50px">
 						 <a href="index.php" class="btn btn-light">Home</a>
 						 <!--------------------------------------PHP-------------------------------->
@@ -45,21 +45,21 @@
 						 <button href="" class="btn btn-light btn-primary-s">Conta Pessoal</button>
 						 <a href="Exeple.html" class="btn btn-light">A Empresa</a>
 					</div>
-				</td>
+				 </div>
 				
-				<td width="30%">
+				 <div width="30%">
 					<div style="margin-top:50px">
 						 <a href="login.php" class="btn btn-primary btn-l">Acessar o sistema</a>
 						<a href="cadastro.php" class="btn btn-primary btn-l" >Cadastro ao sistema</a>
 					</div>
-				</td>
-			</tr>
+				 </div>
+			 </div>
 		</table>
 	</div>
 <!--*************************************************Conteudo Index*******************************************************-->
 	<table width="100%">
-		<tr align="center">
-			<td>
+		 <div class='row' align="center">
+			 <div>
 				<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:900px;height:100px;margin-top:30px">
 				  <ol class="carousel-indicators">
 					<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -82,8 +82,8 @@
 					<span class="sr-only">Next</span>
 				  </a>
 				</div>
-			</td>
-		</tr>
+			 </div>
+		 </div>
 	</table>
 <!--*************************************************Rodapé*******************************************************-->	
 <!--------------------------------------PHP-------------------------------->

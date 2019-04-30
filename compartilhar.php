@@ -9,14 +9,14 @@ $_SESSION['feed'] = "";
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"><!--Modelo CSS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src='script.js'></script>
+    <link rel='stylesheet' href='css.css'>
     <!------------------------------------Style CSS-------------------------------------------->
     <style>
-		.border{border:1px solid silver; margin:0px;padding:9px}
-		.col-sm{font-family:arial;}
-		.btn-arquivos{width:160px;height:22px}
-        .icone{width:30px;height:30px;margin:0px;padding:0px}
-        .feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
+		.col-sm{font-family:arial;width:205px}
+        .feed{position:fixed; bottom:0px; width:40%; margin-left:14%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
+        .row{width:98%;border-bottom:0.9px solid silver;border-radius:5px;text-align:center;padding:5px;background-color:white}
 		</style>
 </head>
 <?php
@@ -34,10 +34,20 @@ $_SESSION['feed'] = "";
             $_SESSION['feed'] = 'Arquivo já está compartilhado';
         }
     }
+
+    if(isset($_POST['undo'])){
+        $delete_compartilhamento = "call delete_compartilhamento_arquivo(".$_POST['undo'].");";
+        if($delete_compartilhamento = mysqli_query($conexao,$delete_compartilhamento)){
+            $_SESSION['feed'] = "Arquivo Descompartilhadod!";
+        }
+        else{
+            $_SESSION['feed'] = "Erro ao descompartilhar!";
+        }
+    }
 ?>
-<body>
+<body class='body' style='background-size:1% 100%'>
 	<div class='conteiner' align='center' >
-		<div class='row border'>
+		<div class='row'>
 			<div class='col-sm'>
 				<strong>Type</strong>
 			</div>
@@ -49,7 +59,10 @@ $_SESSION['feed'] = "";
 			</div>
 			<div class='col-sm'>
 				<strong>Compartilhar</strong>
-			</div>
+            </div>
+            <div class='col-sm'>
+                <strong>Descompartilhar</strong>
+            </div>
 		</div>
 
         <?php
@@ -65,7 +78,7 @@ $_SESSION['feed'] = "";
                     $link_arquivo = $query['link_arquivo'];
                     $link_icone = $query['link_icone'];
                     echo"
-                        <div class='row border'>
+                        <div class='row'>
                             <div class='col-sm'>
                                 <img src='$link_icone' class='icone'>
                             </div>
@@ -100,6 +113,11 @@ $_SESSION['feed'] = "";
                                     </div>
                                 </form>
                             </div>
+                            <form method='post' action='compartilhar.php' target='_self'>
+                                <div class='col-sm'>
+                                    <button type='submit' class='btn badge badge-dark btn-arquivos' name='undo' value='$id_arquivo' onclick='anima_click()'>Desfazer</button>
+                                </div>
+                            <form>
                         </div>
                     ";
                 }
@@ -115,7 +133,7 @@ $_SESSION['feed'] = "";
                         $link_arquivo = $query['link_arquivo'];
                         $link_icone = $query['link_icone'];
                         echo"
-                            <div class='row border'>
+                            <div class='row'>
                                 <div class='col-sm'>
                                     <img src='$link_icone' class='icone'>
                                 </div>
@@ -123,7 +141,7 @@ $_SESSION['feed'] = "";
                                     $nome_arquivo
                                 </div>
                                 <div class='col-sm'>
-                                    $tamanho_arquivo
+                                    $tamanho_arquivo Kb
                                 </div>
                                 <div class='col-sm'>
                                     <form action='compartilhar.php' method='post' target='_self'>
@@ -149,6 +167,11 @@ $_SESSION['feed'] = "";
                                         </div>
                                     </form>
                                 </div>
+                                <form method='post' action='compartilhar.php' target='_self'>
+                                <div class='col-sm'>
+                                    <button type='submit' class='btn badge badge-dark btn-arquivos' name='undo' value='$id_arquivo' onclick='anima_click()'>Desfazer</button>
+                                </div>
+                            <form>
                             </div>
                         ";
                     }
