@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php
+    session_start(); 
+    if(!(isset($_SESSION['id_usuario']))){
+        echo "<script>
+            alert('Faça Login antes!');
+            window.location.href='login.php';
+        </script>";
+    }    
+?>
 <html>
 <head>
 	<!------------------------------------Configuration Bootstrap--------------------------->

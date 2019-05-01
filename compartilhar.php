@@ -1,5 +1,11 @@
 <?php session_start();
 $_SESSION['feed'] = "";
+if(!(isset($_SESSION['id_usuario']))){
+    echo "<script>
+        alert('Faça Login antes!');
+        window.top.location.href='login.php';
+    </script>";
+}
 ?>
 <html>
 <head>
@@ -15,7 +21,7 @@ $_SESSION['feed'] = "";
     <!------------------------------------Style CSS-------------------------------------------->
     <style>
 		.col-sm{font-family:arial;width:205px}
-        .feed{position:fixed; bottom:0px; width:40%; margin-left:14%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
+        .feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
         .row{width:98%;border-bottom:0.9px solid silver;border-radius:5px;text-align:center;padding:5px;background-color:white}
 		</style>
 </head>
@@ -38,7 +44,7 @@ $_SESSION['feed'] = "";
     if(isset($_POST['undo'])){
         $delete_compartilhamento = "call delete_compartilhamento_arquivo(".$_POST['undo'].");";
         if($delete_compartilhamento = mysqli_query($conexao,$delete_compartilhamento)){
-            $_SESSION['feed'] = "Arquivo Descompartilhadod!";
+            $_SESSION['feed'] = "Arquivo Descompartilhado!";
         }
         else{
             $_SESSION['feed'] = "Erro ao descompartilhar!";
@@ -181,9 +187,9 @@ $_SESSION['feed'] = "";
         ?>
 <!--------------------Filtrar--------------------->
     </div>
-    </div class='conteiner' style='align:left'>
+    <div class='conteiner' style='align:left'>
 		<form action='compartilhar.php' method='post' target='_self'>
-        <div class="btn-group">
+            <div class="btn-group">
 				<button type="button" class="btn btn-secondary dropdown-toggle" style='margin:10px' data-toggle="dropdown">
 					Filtrar Extensão
 				</button>
@@ -198,7 +204,7 @@ $_SESSION['feed'] = "";
 					<button type='submit' name='filtro' value='8' class="dropdown-item">.Gif</button>
 					<button type='submit' name='filtro' value='9' class="dropdown-item">.Php</button>
 					<button type='submit' name='filtro' value='10' class="dropdown-item">.Html</button>
-					<button type='submit' name='filtro' value='' class="dropdown-item">Null</button>
+					<button type='submit' name='filtro' value='0' class="dropdown-item">Null</button>
 				</div>
 			</div>
 		</form>

@@ -1,5 +1,11 @@
 <?php session_start();
-$_SESSION['feed'] = "";
+    $_SESSION['feed'] = "";
+    if(!(isset($_SESSION['id_usuario']))){
+        echo "<script>
+            alert('Faça Login antes!');
+            window.top.location.href='login.php';
+        </script>";
+    }
 ?>
 <html>
 <head>
@@ -14,7 +20,7 @@ $_SESSION['feed'] = "";
     <link rel='stylesheet' href='css.css'>
     <!------------------------------------Style CSS-------------------------------------------->
     <style>
-		.border{border:1px solid black; margin:0px;padding:10px;border-radius:10px;background-color:white}
+		.border{border:10px solid black; margin:0px;padding:10px;border-radius:20px;background-color:white}
         .logo{height:90px}
         .form-control{border:1px solid silver;border-radius:10px;width:320px;height:30px;margin:0px;padding:2px;margin-left:20px;margin-bottom:5px}
         .feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
@@ -42,8 +48,7 @@ $_SESSION['feed'] = "";
     }
     //Alteração de dados
     if(isset($_POST['alteracao'])){
-        if($_POST['oldsenha'] == $_SESSION['senha_usuario'] ){  //confere se a senha atual é igual à senha do usuario na sessão
-            $_SESSION['senha_usuario']  = $_POST['newsenha'];   //muda a senha de sessão do usuario para a nova senha digitada
+        if($_POST['oldsenha'] == $senha ){  //confere se a senha atual é igual à senha do usuario na sessão
             //caso algum campo não tenha sido preenchido, o valor original é mantido
             if(strlen($_POST['newnome']) == 0){$_POST['newnome'] = $nome;}
             if(strlen($_POST['newcidade']) == 0){$_POST['newcidade'] = $cidade;}
@@ -60,7 +65,7 @@ $_SESSION['feed'] = "";
 
             if(mysqli_query($conexao,$update_usuario)){
                 $_SESSION['feed'] = "Edicao feita!";
-                echo("<script language='javascript' type='text/javascript'>window.location.href = 'perfil.php'</script>");
+                $_SESSION['senha_usuario']  = $_POST['newsenha'];   //muda a senha de sessão do usuario para a nova senha digitada
             }
             else{
                 $_SESSION['feed'] =  "Erro na query!";
@@ -80,22 +85,14 @@ $_SESSION['feed'] = "";
             while($query=mysqli_fetch_assoc($select)){unlink($query['link_arquivo']);}
 
             //apaga todos os dados do usuario no servido na ordem de compartilhamento(rem e dest),arquivos e usuario
-            mysqli_query($conexao,'start transaction;');
-            mysqli_query($conexao,"delete from compartilhamento where id_remetente =".$_SESSION['id_usuario'].";");
-            mysqli_query($conexao,"delete from compartilhamento where id_destinatario =".$_SESSION['id_usuario'].";");
-            mysqli_query($conexao,"delete from arquivos where id_usuario =".$_SESSION['id_usuario'].";");
-            mysqli_query($conexao,"delete from usuario where id_usuario =".$_SESSION['id_usuario'].";");
-            if( //caso algum resultado ainda esteja sendo apresentado.. desfazer, caso contrario commit e sair da sessão
-                mysqli_num_rows(mysqli_query($conexao,"select * from compartilhamento where id_remetente =".$_SESSION['id_usuario'].";")) > 0 |
-                mysqli_num_rows(mysqli_query($conexao,"select * from compartilhamento where id_destinatario =".$_SESSION['id_usuario'].";")) > 0 |
-                mysqli_num_rows(mysqli_query($conexao,"select * from arquivos where id_usuario =".$_SESSION['id_usuario'].";")) >0 |
-                mysqli_num_rows(mysqli_query($conexao,"select * from usuario where id_usuario =".$_SESSION['id_usuario'].";")) > 0
-            ){mysqli_query('rollback');echo "OPSS";}
-            else{
-                mysqli_query($conexao,'commit');
+            $transact = "call transaction_delete_usuario(".$_SESSION['id_usuario'].");";
+            if(mysqli_query($conexao,$transact)){
                 $_SESSION['feed'] = 'Usuario deletado!';
                 session_unset();
                 session_destroy();
+            }
+            else{
+                $_SESSION['feed'] = 'Erro ao deletar o usuario do BD'; 
             }
         }
         else{$_SESSION['feed'] = "Senha invalida!";}
@@ -121,7 +118,7 @@ $_SESSION['feed'] = "";
                     ?>
                 </form>
             </div>
-            <div class='col-sm border' style='text-align:left'>
+            <div class='col-sm border' style='text-align:left;border:2px solid black'>
                 <?php
                     if(!isset($_POST['alterar_perfil'])){   
                 ?>

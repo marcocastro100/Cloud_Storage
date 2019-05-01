@@ -1,5 +1,11 @@
 <?php session_start();
 $_SESSION['feed'] = ""; //define a variavel de sessão para mostrar feed como nula sempre que uma pagina for carregada
+if(!(isset($_SESSION['id_usuario']))){
+    echo "<script>
+        alert('Faça Login antes!');
+        window.top.location.href='login.php';
+    </script>";
+}
 ?>
 <html>
 <head>
@@ -11,6 +17,7 @@ $_SESSION['feed'] = ""; //define a variavel de sessão para mostrar feed como nu
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src='script.js'></script>
+    <link rel='stylesheet' href='css.css'>
     <!------------------------------------Style CSS-------------------------------------------->
     <style>.feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}</style>
 </head>
@@ -53,46 +60,52 @@ $_SESSION['feed'] = ""; //define a variavel de sessão para mostrar feed como nu
             $uploadok = 0;
         }
         else{
-            //Adicionar os dados do arquivo ao banco de dados
-            $inserquery = "call insert_arquivos(
-                '$_SESSION[id_usuario]',
-                '$nome_arquivo',
-                '$tipo_arquivo',
-                '$tamanho_arquivo',
-                '$caminho_arquivo',
-                '$icone'
-            )";
-            if(mysqli_query($conexao,$inserquery)){
-                
+            if($_FILES['uploadfile']['size'] > 40000000)
+            {
+                $_SESSION['feed'] = "Arquivo excede 40MB!";
+                $upload = 0;
             }
             else{
-                $uploadok = 0;
-                $_SESSION['feed'] = "Falha ao enviar para o BD!"; 
-            }
-            //Tenta mover o arquivo para o servidor
-            if($uploadok == 1){
-                if(move_uploaded_file($_FILES['uploadfile']['tmp_name'],$caminho_arquivo)){
-                    $_SESSION['feed'] = "Enviado com Sucesso!";
-                }
+                //Adicionar os dados do arquivo ao banco de dados
+                $inserquery = "call insert_arquivos(
+                    '$_SESSION[id_usuario]',
+                    '$nome_arquivo',
+                    '$tipo_arquivo',
+                    '$tamanho_arquivo',
+                    '$caminho_arquivo',
+                    '$icone'
+                )";
+                if(mysqli_query($conexao,$inserquery)){}    //faz a consulta no banco de dados propriamente
                 else{
-                    $_SESSION['feed'] = "Falha ao mover arquivo para o servidor!";
+                    $uploadok = 0;
+                    $_SESSION['feed'] = "Falha ao enviar para o BD!"; 
+                    //echo $_SESSION['id_usuario']."||".$nome_arquivo."||".$tipo_arquivo."||".$tamanho_arquivo."||".$caminho_arquivo."||".$icone;
+                }
+                //Tenta mover o arquivo para o servidor
+                if($uploadok == 1){
+                    if(move_uploaded_file($_FILES['uploadfile']['tmp_name'],$caminho_arquivo)){
+                        $_SESSION['feed'] = "Enviado com Sucesso!";
+                        //echo $_FILES['uploadfile']['size'];
+                    }
+                    else{
+                        $_SESSION['feed'] = "Falha ao mover arquivo para o servidor!";
+                        //echo $caminho_arquivo."||".$_FILES['uploadfile']['name']."||".$_FILES['uploadfile']['tmp_name']."||".$_FILES['uploadfile']['size']."||".$caminho_arquivo."||".$icone;
+                    }
                 }
             }
         }
     }
 ?>
-<body>
-    <table align="center">
-        <tr>
-            <td style="padding-top:100px">
+<body class='body' style='background-size:1% 100%;'>
+        <div class='row'>
+            <div style="padding-top:100px;width:70%;margin-left:30%">
                 <form action="<?php echo $_SERVER['PHP_SELF'];  ?>" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="MAX_FILE_SIZE" value="300000">
+                    <input type="hidden" name="MAX_FILE_SIZE" value="40000000">
                     <input type="file" class="form-control-file" name="uploadfile"><br>
                     <button type="submit" class="btn btn-primary" name="submit" onclick='anima_click(this)'>Enviar Arquivo</button>
                 </form>
-            </td>
-        </tr>
-    </table>
+            </div>
+        </div>
     <input type='text' name='feed' class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
 </body>
 </html>

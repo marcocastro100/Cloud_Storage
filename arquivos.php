@@ -1,5 +1,11 @@
 <?php session_start();
 $_SESSION['feed'] = "";
+if(!(isset($_SESSION['id_usuario']))){
+    echo "<script>
+        alert('Faça Login antes!');
+        window.top.location.href='login.php';
+    </script>";
+}
 ?>
 <html>
 <head>
@@ -163,7 +169,7 @@ $_SESSION['feed'] = "";
 					<button type='submit' name='filtro' value='8' class="dropdown-item">.Gif</button>
 					<button type='submit' name='filtro' value='9' class="dropdown-item">.Php</button>
 					<button type='submit' name='filtro' value='10' class="dropdown-item">.Html</button>
-					<button type='submit' name='filtro' value='' class="dropdown-item">Null</button>
+					<button type='submit' name='filtro' value='0' class="dropdown-item">Null</button>
 				</div>
 			</div>
 		</form>

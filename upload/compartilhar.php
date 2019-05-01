@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php session_start();
+$_SESSION['feed'] = "";
+if(!(isset($_SESSION['id_usuario']))){
+    echo "<script>
+        alert('Faça Login antes!');
+        window.top.location.href='login.php';
+    </script>";
+}
+?>
 <html>
 <head>
 	<!------------------------------------Configuration Bootstrap--------------------------->
@@ -7,14 +15,14 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"><!--Modelo CSS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src='script.js'></script>
+    <link rel='stylesheet' href='css.css'>
     <!------------------------------------Style CSS-------------------------------------------->
     <style>
-		table,td,tr{border:1px solid silver;text-align:center}
-		.border{border:1px solid silver; margin:0px;padding:10px}
-		.col-sm{font-family:arial;}
-		.btn-arquivos{width:160px;height:22;border:0px solid silver}
-        .icone{width:30px;height:30px;magin:0px;padding:0px}
+		.col-sm{font-family:arial;width:205px}
+        .feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
+        .row{width:98%;border-bottom:0.9px solid silver;border-radius:5px;text-align:center;padding:5px;background-color:white}
 		</style>
 </head>
 <?php
@@ -24,20 +32,28 @@
         $id_arq_comp = $_POST['arq_comp'];
         $id_remetente = $_SESSION['id_usuario'];
         $id_destinatario = $_POST['compartilhar'];
-        echo $id_arq_comp.','.$id_remetente.','.$id_destinatario;
-        $insert_compartilhamento = "insert into compartilhamento (id_arquivo,id_remetente,id_destinatario) values(
-            ".$id_arq_comp.",".$id_remetente.",".$id_destinatario.");";
+        $insert_compartilhamento = "call insert_compartilhamento(".$id_arq_comp.",".$id_remetente.",".$id_destinatario.");";
         if($insert_compartilhamento = mysqli_query($conexao,$insert_compartilhamento)){
-            echo'Arquivo Compartilhado com Sucesso!';
+            $_SESSION['feed'] = 'Arquivo Compartilhado com Sucesso!';
         }
         else{
-            echo'Arquivo já está compartilhado';
+            $_SESSION['feed'] = 'Arquivo já está compartilhado';
+        }
+    }
+
+    if(isset($_POST['undo'])){
+        $delete_compartilhamento = "call delete_compartilhamento_arquivo(".$_POST['undo'].");";
+        if($delete_compartilhamento = mysqli_query($conexao,$delete_compartilhamento)){
+            $_SESSION['feed'] = "Arquivo Descompartilhado!";
+        }
+        else{
+            $_SESSION['feed'] = "Erro ao descompartilhar!";
         }
     }
 ?>
-<body>
+<body class='body' style='background-size:1% 100%'>
 	<div class='conteiner' align='center' >
-		<div class='row border'>
+		<div class='row'>
 			<div class='col-sm'>
 				<strong>Type</strong>
 			</div>
@@ -49,7 +65,10 @@
 			</div>
 			<div class='col-sm'>
 				<strong>Compartilhar</strong>
-			</div>
+            </div>
+            <div class='col-sm'>
+                <strong>Descompartilhar</strong>
+            </div>
 		</div>
 
         <?php
@@ -65,7 +84,7 @@
                     $link_arquivo = $query['link_arquivo'];
                     $link_icone = $query['link_icone'];
                     echo"
-                        <div class='row border'>
+                        <div class='row'>
                             <div class='col-sm'>
                                 <img src='$link_icone' class='icone'>
                             </div>
@@ -73,7 +92,7 @@
                                 $nome_arquivo
                             </div>
                             <div class='col-sm'>
-                                $tamanho_arquivo
+                                $tamanho_arquivo Kb
                             </div>
                             <div class='col-sm'>
                                 <form action='compartilhar.php' method='post' target='_self'>
@@ -100,6 +119,11 @@
                                     </div>
                                 </form>
                             </div>
+                            <form method='post' action='compartilhar.php' target='_self'>
+                                <div class='col-sm'>
+                                    <button type='submit' class='btn badge badge-dark btn-arquivos' name='undo' value='$id_arquivo' onclick='anima_click()'>Desfazer</button>
+                                </div>
+                            <form>
                         </div>
                     ";
                 }
@@ -115,7 +139,7 @@
                         $link_arquivo = $query['link_arquivo'];
                         $link_icone = $query['link_icone'];
                         echo"
-                            <div class='row border'>
+                            <div class='row'>
                                 <div class='col-sm'>
                                     <img src='$link_icone' class='icone'>
                                 </div>
@@ -123,7 +147,7 @@
                                     $nome_arquivo
                                 </div>
                                 <div class='col-sm'>
-                                    $tamanho_arquivo
+                                    $tamanho_arquivo Kb
                                 </div>
                                 <div class='col-sm'>
                                     <form action='compartilhar.php' method='post' target='_self'>
@@ -149,6 +173,11 @@
                                         </div>
                                     </form>
                                 </div>
+                                <form method='post' action='compartilhar.php' target='_self'>
+                                <div class='col-sm'>
+                                    <button type='submit' class='btn badge badge-dark btn-arquivos' name='undo' value='$id_arquivo' onclick='anima_click()'>Desfazer</button>
+                                </div>
+                            <form>
                             </div>
                         ";
                     }
@@ -158,9 +187,9 @@
         ?>
 <!--------------------Filtrar--------------------->
     </div>
-    </div class='conteiner' style='align:left'>
+    <div class='conteiner' style='align:left'>
 		<form action='compartilhar.php' method='post' target='_self'>
-        <div class="btn-group">
+            <div class="btn-group">
 				<button type="button" class="btn btn-secondary dropdown-toggle" style='margin:10px' data-toggle="dropdown">
 					Filtrar Extensão
 				</button>
@@ -179,6 +208,7 @@
 				</div>
 			</div>
 		</form>
-	</div>
+    </div>
+    <input type='text' name='feed' class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
 </body>
 </html>

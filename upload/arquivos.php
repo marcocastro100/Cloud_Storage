@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php session_start();
+$_SESSION['feed'] = "";
+if(!(isset($_SESSION['id_usuario']))){
+    echo "<script>
+        alert('Faça Login antes!');
+        window.top.location.href='login.php';
+    </script>";
+}
+?>
 <html>
 <head>
 	<!------------------------------------Configuration Bootstrap--------------------------->
@@ -7,15 +15,14 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"><!--Modelo CSS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src='script.js'></script>
+    <link rel='stylesheet' href="css.css">
     <!------------------------------------Style CSS-------------------------------------------->
     <style>
-		table,td,tr{border:1px solid silver;text-align:center}
-		.border{border:1px solid silver; margin:0px;padding:10px}
-		.col-sm{font-family:arial;}
-		.btn-arquivos{width:120px;height:20px}
-        .icone{'width:30px;height:30px;magin:0px;padding:0px}
-		</style>
+        .row{margin-left:10px;width:98%;border-bottom:0.9px solid silver;border-radius:5px;text-align:center;padding:5px;background-color:white}
+        .col-sm{font-family:arial;width:250px}
+    </style>
 </head>
 <?php
 	$conexao = mysqli_connect("localhost","root","790084","repositorio") or die("fail connect"); #Tenta conectar à base de dados e ao banco 'pagin'
@@ -27,21 +34,21 @@
 			while($row = mysqli_fetch_assoc($caminho)){$caminho2 = $row['link_arquivo'];}//transforma a query em texto
 		//query para deletar o arquivo do banco de dados
 		$id_excluir = $_POST['excluir'];
-		$delete_query = 'delete from arquivos where id_arquivo = '.$id_excluir.';';
+		$delete_query = "call delete_arquivos(".$id_excluir.");";
 		if(mysqli_query($conexao,$delete_query)){
 			unlink($caminho2);	//função que deleta o arquivo no servidor
-			$_SESSION['feed'] =  "Deletado!";
+			$_SESSION['feed'] = "Deletado!";
 		}
-		else{$_SESSION['feed'] =  "Erro ao deletar!";}
+		else{$_SESSION['feed'] = "Erro ao deletar,arquivo pode estar sendo compartilhado!";}
 	}
 	//Adicionar arquivos
 	if(isset($_POST['adicionar'])){	//se o botão de adição for acionado, a pagina é redirecionada para upload.php
 		echo("<script language='javascript' type='text/javascript'>window.location.href = 'upload.php'</script>");
 	}
 ?>
-<body>
-	<div class='conteiner' align='center' >
-		<div class='row border'>
+<body class='intro body' style='background-size:1% 100%'>
+	<div class='conteiner'>
+		<div class='row'>
 			<div class='col-sm'>
 				<strong>Type</strong>
 			</div>
@@ -60,20 +67,21 @@
 		</div>
 		<?php
 			$select_query = "select * from arquivos where id_usuario = ".$_SESSION['id_usuario'].";";
-			$result = mysqli_query($conexao,$select_query);
+            $result = mysqli_query($conexao,$select_query);
+            //Gerar tabela de arquivos
 			if(!isset($_POST['filtro'])){
 				if(mysqli_num_rows($result)){
 					while($row = mysqli_fetch_assoc($result)){
-						if($row['tamanho_arquivo'] > 0){
+						if($row['tamanho_arquivo'] >= 0){
 							$link = $row['link_arquivo'];
 							$nome = $row['nome_arquivo'];
 							$id = $row['id_arquivo'];
 							$icone = $row['link_icone'];
 							$tamanho = round($row['tamanho_arquivo'] / 1000);	//formata para aparece em kb
 							echo "
-								<div class='row border'>
+								<div class='row'>
 									<div class='col-sm'>
-										<img src='$icone' style='width:30px;height:30px;magin:0px;padding:0px'>
+										<img src='$icone' class='icone'>
 									</div>
 									<div class='col-sm'>
 										$nome
@@ -81,14 +89,14 @@
 									<div class='col-sm '>
 										$tamanho Kb
 									</div>
-									<div class='col-sm' style='margin-top:5px'>
+									<div class='col-sm'>
 										<a href='$link' download>
-											<button class='badge-primary badge btn btn-arquivos' name='download' value='$id'>Download</button>
+											<button class='badge-primary badge btn btn-arquivos' name='download' onclick='anima_click(this)'>Download</button>
 										</a>
 									</div>
-									<div class='col-sm' style='margin-top:5px'>
+									<div class='col-sm'>
 										<form action='arquivos.php' method='post' target='_self'>
-											<button type='submit' class='badge-danger badge btn btn-arquivos' name='excluir' value='$id'>Excluir</button>
+											<button type='submit' class='badge-danger badge btn btn-arquivos' name='excluir' value='$id' onclick='anima_click(this)'>Excluir</button>
 										</form>
 									</div>
 								</div>
@@ -110,9 +118,9 @@
 							$icone = $row['link_icone'];
 							$tamanho = round($row['tamanho_arquivo'] / 1000);	//formata para aparece em kb
 							echo "
-							<div class='row border'>
+							<div class='row'>
 								<div class='col-sm'>
-                                 <img src='$icone'>
+                                 <img src='$icone' class='icone'>
 								</div>
 								<div class='col-sm'>
 									$nome
@@ -120,14 +128,14 @@
 								<div class='col-sm '>
 									$tamanho Kb
 								</div>
-								<div class='col-sm' style='margin-top:5px'>
+								<div class='col-sm'>
 									<a href='$link' download>
-										<button class='badge-primary badge btn btn-arquivos' name='download' value='$id'>Download</button>
+										<button class='badge-primary badge btn btn-arquivos' name='download' onclick='anima_click(this)'>Download</button>
 									</a>
 								</div>
-								<div class='col-sm' style='margin-top:5px'>
+								<div class='col-sm'>
 									<form action='arquivos.php' method='post' target='_self'>
-										<button type='submit' class='badge-danger badge btn btn-arquivos' name='excluir' value='$id'>Excluir</button>
+										<button type='submit' class='badge-danger badge btn btn-arquivos' name='excluir' onclick='anima_click(this)'>Excluir</button>
 									</form>
 								</div>
 							</div>
@@ -144,7 +152,7 @@
 	<!-----------------------Adicionar Arquivos------------------->
 	</div class='conteiner' style='align:left'>
 		<form action='arquivos.php' method='post' target='_self'>
-			<button type='submit' name='adicionar' class='btn btn-success' style='margin:10px'>Adcionar arquivo</button>
+			<button type='submit' name='adicionar' class='btn btn-success' style='margin:10px' onclick='anima_click(this)'>Adcionar arquivo</button>
 	<!----------------------Filtrar Arquivos----------------------->			
 			<div class="btn-group">
 				<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
@@ -165,7 +173,7 @@
 				</div>
 			</div>
 		</form>
-		
-	</div>
+    </div>
+    <input type='text' name='feed' class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
 </body>
 </html>

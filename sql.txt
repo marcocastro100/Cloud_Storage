@@ -10,6 +10,35 @@ create table usuario(
     primary key(id_usuario)
 );
 
+create table extensao(
+	id_extensao integer(3) not null,
+    extensao varchar(10) not null,
+    primary key(id_extensao)
+);
+
+create table arquivos(
+	id_arquivo integer(4) not null auto_increment,
+    id_usuario integer(5) not null,
+    nome_arquivo varchar(200) not null,
+    extensao_arquivo int,
+    tamanho_arquivo float,
+    link_arquivo varchar(200) not null,
+    link_icone varchar(200),
+    primary key(id_arquivo),
+    foreign key(extensao_arquivo) references extensao (id_extensao),
+    foreign key(id_usuario) references usuario(id_usuario)
+);
+
+create table compartilhamento(
+	id_arquivo integer(4) not null,
+    id_remetente integer(5) not null,
+    id_destinatario integer(5) not null,
+    primary key(id_arquivo,id_remetente,id_destinatario),
+    foreign key(id_arquivo) references arquivos(id_arquivo),
+    foreign key(id_remetente) references usuario(id_usuario),
+    foreign key(id_destinatario) references usuario(id_usuario)
+);
+
 delimiter /
 	create procedure insert_usuario(nome varchar(50),cidade varchar(50),email varchar(50),senha varchar(20))
     begin
@@ -31,31 +60,12 @@ delimiter /
 		delete from usuario where id_usuario = id;
     end;
 /
-
-create table extensao(
-	id_extensao integer(3) not null,
-    extensao varchar(10) not null,
-    primary key(id_extensao)
-);
 delimiter /
 	create procedure insert_extensao(id integer(3),extensao varchar(10))
     begin
 		insert into extensao values(id,extensao);
     end;
 /
-
-create table arquivos(
-	id_arquivo integer(4) not null auto_increment,
-    id_usuario integer(5) not null,
-    nome_arquivo varchar(200) not null,
-    extensao_arquivo int,
-    tamanho_arquivo float,
-    link_arquivo varchar(200) not null,
-    link_icone varchar(200),
-    primary key(id_arquivo),
-    foreign key(extensao_arquivo) references extensao (id_extensao),
-    foreign key(id_usuario) references usuario(id_usuario)
-);
 delimiter/
 	create procedure insert_arquivos(id_user integer(5),nome varchar(200),extensao integer(3),
 		tamanho float,link_arq varchar(200),link_icon varchar(200))
@@ -70,21 +80,27 @@ delimiter /
 		delete from arquivos where id_arquivo = id_arq;
     end;
 /
-
-create table compartilhamento(
-	id_arquivo integer(4) not null,
-    id_remetente integer(5) not null,
-    id_destinatario integer(5) not null,
-    primary key(id_arquivo,id_remetente,id_destinatario),
-    foreign key(id_arquivo) references arquivos(id_arquivo),
-    foreign key(id_remetente) references usuario(id_usuario),
-    foreign key(id_destinatario) references usuario(id_usuario)
-);
 delimiter /
 	create procedure insert_compartilhamento(id_arq integer(4),id_remet integer(5),id_dest integer(5))
     begin
 		insert into compartilhamento values (id_arq,id_remet,id_dest);
     end;
 /
-
-insert into extensao values (001,'pdf'),(002,'doc'),(003,'txt'),(004,'jpg'),(005,'png'),(006,'mp4'),(007,'docx'),(008,'gif'),(009,'php'),(010,'html');
+delimiter /
+	create procedure delete_compartilhamento_arquivo(id_arq int(4))
+    begin
+		delete from compartilhamento where id_arquivo = id_arq;
+    end;
+/	
+delimiter /
+	create procedure transaction_delete_usuario(id_user int)
+    begin
+	start transaction;
+	delete from compartilhamento where id_remetente = id_user;
+        delete from compartilhamento where id_destinatario = id_user;
+        delete from arquivos where id_usuario = id_user;
+        delete from usuario where id_usuario = id_user;
+	commit;
+    end;
+/
+insert into extensao values (000,''),(001,'pdf'),(002,'doc'),(003,'txt'),(004,'jpg'),(005,'png'),(006,'mp4'),(007,'docx'),(008,'gif'),(009,'php'),(010,'html');
