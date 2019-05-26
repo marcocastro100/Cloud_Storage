@@ -12,16 +12,15 @@
 	<!------------------------------------Configuration Bootstrap--------------------------->
 	<meta charset="utf-8"> <!--Acentuação-->
 	<meta name="viewport" content="width=device-width, initial-scale=1"><!--Responsividade(tamanho tela celular)-->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"><!--Modelo CSS-->
+	<link rel="stylesheet" href="css/bootstrap.min.css"><!--Modelo CSS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
     <script src='script.js'></script>
-    <link rel='stylesheet' href='css.css'>
+    <link rel='stylesheet' href="css.css">
     <!------------------------------------Style CSS-------------------------------------------->
     <style>
 		.border{border:10px solid black; margin:0px;padding:10px;border-radius:20px;background-color:white}
-        .logo{height:90px}
         .form-control{border:1px solid silver;border-radius:10px;width:320px;height:30px;margin:0px;padding:2px;margin-left:20px;margin-bottom:5px}
         .feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}
 		</style>
@@ -103,7 +102,7 @@
         <div class='row' style='width:800px;height:450px;margin-left:11%;margin-top:1%;;text-align:center'>
             <div class='col-sm border' style='margin-right:5px'>
                 <div class='' style='border-radius:1000px;width:130px;height:130px;margin-left:32%;margin-top:30px'>
-                    <img src="http://www.stickpng.com/assets/images/5847faf6cef1014c0b5e48cd.png" class='logo'>
+                    <img src="logo.png" class='logo'>
                 </div>
                 <form action='perfil.php' method='post' target='_self'>
                     <button type='submit' name='alterar_perfil' class='badge-success badge btn btn-arquivos'onclick='anima_click(this)'>Alterar Perfil</button>

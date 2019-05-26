@@ -48,9 +48,9 @@ delimiter /
 /
 
 delimiter /
-	create procedure update_usuario(nome varchar(50),cidade varchar(50),email varchar(50),senha varchar(20))
+	create procedure update_usuario(id int(5),nome varchar(50),cidade varchar(50),email varchar(50),senha varchar(20))
     begin
-		update usuario set nome_usuario = nome,cidade_usuario = cidade, email_usuario = email,senha_usuario = senha;
+		update usuario set nome_usuario = nome,cidade_usuario = cidade, email_usuario = email,senha_usuario = senha where id_usuario = id;
     end;
 /
 

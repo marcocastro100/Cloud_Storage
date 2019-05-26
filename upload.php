@@ -12,12 +12,12 @@ if(!(isset($_SESSION['id_usuario']))){
 	<!------------------------------------Configuration Bootstrap--------------------------->
 	<meta charset="utf-8"> <!--Acentuação-->
 	<meta name="viewport" content="width=device-width, initial-scale=1"><!--Responsividade(tamanho tela celular)-->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"><!--Modelo CSS-->
+	<link rel="stylesheet" href="css/bootstrap.min.css"><!--Modelo CSS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
     <script src='script.js'></script>
-    <link rel='stylesheet' href='css.css'>
+    <link rel='stylesheet' href="css.css">
     <!------------------------------------Style CSS-------------------------------------------->
     <style>.feed{position:fixed; bottom:0px; width:40%; margin-left:30%; border-radius:10px; text-align:center; border:1px solid silver;background-color:e6e6e6; color:black}</style>
 </head>

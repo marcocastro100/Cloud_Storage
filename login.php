@@ -4,11 +4,10 @@
 <!------------------------------------Configuration Bootstrap--------------------------->
 	<meta charset="utf-8"> <!--Acentuação-->
 	<meta name="viewport" content="width=device-width, initial-scale=1"><!--Responsividade(tamanho tela celular)-->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"><!--Modelo CSS-->
+	<link rel="stylesheet" href="css/bootstrap.min.css"><!--Modelo CSS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
     <script src='script.js'></script>
     <link rel='stylesheet' href="css.css">
 <!------------------------------------Style CSS-------------------------------------------->    
@@ -51,7 +50,7 @@
 			<td>
 				<div width="200px" style="width:300px">
 					<form action="login.php" target="_self" method="post">
-						<img src="http://www.stickpng.com/assets/images/5847faf6cef1014c0b5e48cd.png" class="logo"><br>
+						<img src="logo.png" class="logo"><br>
 						<h2>Acesso ao Sistema<br><br></h2>
 						<input type="email" name="inputemail" class="form-control" placeholder="Endereço de Email">
 						<input type="password" name="inputpassword" class="form-control" placeholder="Senha"><br>
