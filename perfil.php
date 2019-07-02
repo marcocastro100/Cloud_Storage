@@ -1,11 +1,5 @@
-<?php session_start();
-    $_SESSION['feed'] = "";
-    if(!(isset($_SESSION['id_usuario']))){
-        echo "<script>
-            alert('Faça Login antes!');
-            window.top.location.href='login.php';
-        </script>";
-    }
+<?php
+$_SESSION['feed'] = " ";
 ?>
 <html>
 <head>
@@ -26,7 +20,7 @@
 		</style>
 </head>
 <?php
-    $conexao = mysqli_connect("localhost","root","790084","repositorio") or die("Erro ao conectar ao BD!");
+    include("conexao.php");
 
     $select_usuario = "select * from usuario where id_usuario=".$_SESSION['id_usuario'].";";
     $select_usuario = mysqli_query($conexao,$select_usuario);
@@ -52,7 +46,7 @@
             if(strlen($_POST['newnome']) == 0){$_POST['newnome'] = $nome;}
             if(strlen($_POST['newcidade']) == 0){$_POST['newcidade'] = $cidade;}
             if(strlen($_POST['newemail']) == 0){$_POST['newemail'] = $email;}
-            if(strlen($_POST['newsenha']) == 0){$POST['newsenha'] = $senha;}
+            if(strlen($_POST['newsenha']) == 0){$_POST['newsenha'] = $_POST['oldsenha'];}
             //query
             $update_usuario = "call update_usuario(
                 ".$_SESSION['id_usuario'].",
@@ -65,6 +59,7 @@
             if(mysqli_query($conexao,$update_usuario)){
                 $_SESSION['feed'] = "Edicao feita!";
                 $_SESSION['senha_usuario']  = $_POST['newsenha'];   //muda a senha de sessão do usuario para a nova senha digitada
+                //echo"<script>window.down.location.href=".$_SERVER['PHP_SELF'];."</script>";
             }
             else{
                 $_SESSION['feed'] =  "Erro na query!";
@@ -102,7 +97,7 @@
         <div class='row' style='width:800px;height:450px;margin-left:11%;margin-top:1%;;text-align:center'>
             <div class='col-sm border' style='margin-right:5px'>
                 <div class='' style='border-radius:1000px;width:130px;height:130px;margin-left:32%;margin-top:30px'>
-                    <img src="logo.png" class='logo'>
+                    <img src="images/LionsCoding1.png" class='logo'>
                 </div>
                 <form action='perfil.php' method='post' target='_self'>
                     <button type='submit' name='alterar_perfil' class='badge-success badge btn btn-arquivos'onclick='anima_click(this)'>Alterar Perfil</button>
@@ -173,5 +168,5 @@
             </div>
         </div>
     </div>
-    <input type='text' name='feed' class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
+    <input type='text' name='feed' disabled class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
 </body>

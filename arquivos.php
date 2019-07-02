@@ -1,11 +1,5 @@
-<?php session_start();
+<?php
 $_SESSION['feed'] = "";
-if(!(isset($_SESSION['id_usuario']))){
-    echo "<script>
-        alert('Faça Login antes!');
-        window.top.location.href='login.php';
-    </script>";
-}
 ?>
 <html>
 <head>
@@ -25,7 +19,7 @@ if(!(isset($_SESSION['id_usuario']))){
     </style>
 </head>
 <?php
-	$conexao = mysqli_connect("localhost","root","790084","repositorio") or die("fail connect"); #Tenta conectar à base de dados e ao banco 'pagin'
+	include("conexao.php");
 	//Deletar arquivo do sistema
 	if(isset($_POST['excluir'])){
 		//Descobrir onde está o arquivo para deletar do servidor
@@ -174,6 +168,6 @@ if(!(isset($_SESSION['id_usuario']))){
 			</div>
 		</form>
     </div>
-    <input type='text' name='feed' class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
+    <input type='text' name='feed' disabled class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
 </body>
 </html>

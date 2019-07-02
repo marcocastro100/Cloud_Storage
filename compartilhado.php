@@ -1,11 +1,5 @@
-<?php session_start();
+<?php
 $_SESSION['feed'] = "";
-if(!(isset($_SESSION['id_usuario']))){
-    echo "<script>
-        alert('Faça Login antes!');
-        window.top.location.href='login.php';
-    </script>";
-}
 ?>
 <html>
 <head>
@@ -26,7 +20,7 @@ if(!(isset($_SESSION['id_usuario']))){
 		</style>
 </head>
 <?php
-    $conexao = mysqli_connect("localhost","root","790084","repositorio") or die("Não foi possivel connectar ao BD");
+    include("conexao.php");
     /*Realiza uma consulta sql fazendo uma junção das tables compartilhamento,usuario e arquivos para
     gerar uma table com os arquivos que foram compartilhados com o usuario logado na sessão, portanto
     mostrando os arquivos contidos na table compartilhamento para exibição dos arquivos corretos,
@@ -159,6 +153,6 @@ if(!(isset($_SESSION['id_usuario']))){
 			</div>
 		</form>
     </div>
-    <input type='text' name='feed' class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
+    <input type='text' name='feed' disabled class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
 </body>
 </html>

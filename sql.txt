@@ -66,7 +66,7 @@ delimiter /
 		insert into extensao values(id,extensao);
     end;
 /
-delimiter/
+delimiter /
 	create procedure insert_arquivos(id_user integer(5),nome varchar(200),extensao integer(3),
 		tamanho float,link_arq varchar(200),link_icon varchar(200))
         begin

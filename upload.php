@@ -1,11 +1,5 @@
-<?php session_start();
+<?php
 $_SESSION['feed'] = ""; //define a variavel de sessão para mostrar feed como nula sempre que uma pagina for carregada
-if(!(isset($_SESSION['id_usuario']))){
-    echo "<script>
-        alert('Faça Login antes!');
-        window.top.location.href='login.php';
-    </script>";
-}
 ?>
 <html>
 <head>
@@ -23,7 +17,7 @@ if(!(isset($_SESSION['id_usuario']))){
 </head>
 <?php
     if(isset($_FILES["uploadfile"])){
-        $conexao = mysqli_connect("localhost","root","790084","repositorio") or die("fail connect"); #Tenta conectar à base de dados e ao banco 'pagin'
+        include("conexao.php");
 
         $nome_arquivo =  str_replace("'","",$_FILES['uploadfile']['name']); //str_replace:troca caracteres para não dar interferencia na adição do banco de dados
         $nome_arquivo =  str_replace('"','',$_FILES['uploadfile']['name']);
@@ -106,6 +100,6 @@ if(!(isset($_SESSION['id_usuario']))){
                 </form>
             </div>
         </div>
-    <input type='text' name='feed' class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
+    <input type='text' name='feed' disabled class=' badge-basic from-control feed' placeholder="<?php if(isset($_SESSION['feed'])){echo $_SESSION['feed'];} ?>" target="contentiframe">   
 </body>
 </html>

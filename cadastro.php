@@ -1,3 +1,6 @@
+<?php
+	include("conexao.php");
+?>
 <html>
 <head>
 <!------------------------------------Configuration Bootstrap--------------------------->	
@@ -14,7 +17,6 @@
 <!--**********************************************Verificão de Formulario****************************************-->
 <?php
 	if( isset($_POST['inputnome'])){	//Condição de primeira visita à pagina para rodar o php
-        $conexao = mysqli_connect("localhost","root","790084","repositorio") or die("Não conectado!");	//Conexão banco de dados especificamente pagin
         
         $insert =  "call insert_usuario('".$_POST['inputnome']."','".$_POST['inputcidade']."','"
             .$_POST['inputemail']."','".$_POST['inputsenha']."');";
@@ -39,7 +41,7 @@
 			<td>
 				<div width="200px" style="width:300px">
 					<form action="cadastro.php" target="_self" method="post">
-					<img src="logo.png" class="logo"><img><br>
+					<img src="images/LionsCoding1.png" class="logo"><img><br>
 						<h2>Realizar Cadastro<br><br>
 						<input type="text" name="inputnome" class="form-control" placeholder="Nome">
 						<input type="text" name="inputcidade" class="form-control" placeholder="Cidade">

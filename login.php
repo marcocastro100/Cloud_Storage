@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php 
+    include("conexao.php");
+?>
 <html>
 <head>
 <!------------------------------------Configuration Bootstrap--------------------------->
@@ -15,7 +17,6 @@
 <!--**********************************************Verificão de Formulario****************************************-->
 <?php
 	if(isset($_POST["inputemail"])){	//Condição de primeira visita à pagina para rodar o php
-		$conexao = mysqli_connect("localhost","root","790084","repositorio") or die("fail connect"); #Tenta conectar à base de dados e ao banco 'pagin'
         
         $select = "select * from usuario";	//consulta sql da tabela users(usuarios do sistema) pegando o email e password para comparação com os inseridos pelo usuario no sistema
         if($select = mysqli_query($conexao,$select)){
@@ -50,7 +51,7 @@
 			<td>
 				<div width="200px" style="width:300px">
 					<form action="login.php" target="_self" method="post">
-						<img src="logo.png" class="logo"><br>
+						<img src="images/LionsCoding1.png" class="logo"><br>
 						<h2>Acesso ao Sistema<br><br></h2>
 						<input type="email" name="inputemail" class="form-control" placeholder="Endereço de Email">
 						<input type="password" name="inputpassword" class="form-control" placeholder="Senha"><br>

@@ -1,11 +1,5 @@
 <?php
-    session_start(); 
-    if(!(isset($_SESSION['id_usuario']))){
-        echo "<script>
-            alert('Faça Login antes!');
-            window.location.href='login.php';
-        </script>";
-    }    
+	include("conexao.php");    
 ?>
 <html>
 <head>
@@ -42,14 +36,14 @@
         <div class='row' style='text-align:center'>
             <!--Logo-->
             <div style="width:20%">
-                <img src="logo.png" class="logo"><img>
+                <img src="images/LionsCoding1.png" class="logo"><img>
             </div>
             <!--Menu Centro-->
             <div style="width:50%">
                 <div style="margin-top:50px">
                     <a href="index.php" class="menubtn btn btn-light" onclick='anima_click(this)'>Home</a>
                     <a href="usuario.php" class="menubtn btn btn-light" onclick='anima_click(this)'>Area do Cliente</a>
-                    <a href="" class="menubtn btn btn-light" onclick='anima_click(this)'>Informações Empresa</a>
+                    <a href="empresa.html" class="menubtn btn btn-light" onclick='anima_click(this)'>Informações Empresa</a>
                 </div>
             </div>
             <!--Menu Direito-->	

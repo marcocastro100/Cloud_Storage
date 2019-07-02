@@ -21,7 +21,7 @@
     <div class='conteiner' style='height:17%'>
         <div class='row' style='text-align:center;'>
             <div style='width:20%;'>
-                <img src="logo.png" class='logo'><img>
+                <img src="images/LionsCoding1.png" class='logo'><img>
             </div>
             <div style='width:50%;'>
                 <div style="margin-top:50px">
@@ -34,7 +34,7 @@
                                 else{ ?>
                                     <button href="usuario.php" class="btn btn-light" disabled>Area do Cliente</button>
                                 <?php } ?>
-                        <a href="" class="btn btn-light" onclick='anima_click(this)'>Informações Empresa</a>
+                        <a href="empresa.html" class="btn btn-light" onclick='anima_click(this)'>Informações Empresa</a>
                 </div>
             </div>
             <div style='width:30%;'>
@@ -54,11 +54,11 @@
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                 </ol>
                 <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://www.cassi.com.br/modules/mod_giantcontent/assets/libraries/includes/timthumb.php?src=/images/ALIMENTACAO-SAUDAVEL_INTERNET_1950X450.jpg&w=1600&h=500&q=100" class="d-block w-100" alt="...">
+                <div class="carousel-item active" style='height:430px'>
+                    <img src="banner1.jpg" class="d-block w-100" alt="...">
                 </div>
-                <div class="carousel-item">
-                    <img src="https://www.cassi.com.br/modules/mod_giantcontent/assets/libraries/includes/timthumb.php?src=/images/ra2018_1950x450.jpg&w=1600&h=500&q=100" class="d-block w-100" alt="...">
+                <div class="carousel-item" style='height:430px'>
+                    <img src="banner2.jpg" class="d-block w-100" alt="...">
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
