@@ -9,4 +9,4 @@ Implemented:
   Profile control\
   Session orientation\
   
-University disciplines envolved: Databases II, Web Engineering
+UFVJM - University disciplines envolved: Databases II, Web Engineering
